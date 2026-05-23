@@ -1,0 +1,86 @@
+@page
+@model Firmeza.Web.Pages.Import.IndexModel
+@attribute [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
+@{
+    ViewData["Title"] = "Import Data";
+}
+
+<div class="flex items-center justify-between mb-6">
+    <p class="text-sm text-gray-500">Upload an Excel file (.xlsx) with mixed data — products and clients are detected automatically.</p>
+</div>
+
+<!-- Formato esperado -->
+<div class="bg-blue-50 border border-blue-200 rounded-xl px-5 py-4 mb-6 text-sm text-blue-800">
+    <p class="font-semibold mb-1"><i class="bi bi-info-circle mr-1"></i> Expected Excel columns (order does not matter):</p>
+    <p class="text-xs font-mono mt-1">
+        ProductName | Category | Unit | Price | Stock | Description |
+        ClientFirstName | ClientLastName | DocumentNumber | DocumentType | Email | Phone | Address | Age |
+        Quantity | SaleDate | Status
+    </p>
+    <p class="text-xs mt-2">Leave product or client columns empty in a row to skip that entity. Spanish column names are also accepted (Producto, Precio, Nombre, Apellido, Cedula, Cantidad, Fecha, etc.).</p>
+</div>
+
+<!-- Formulario de carga -->
+<div class="bg-white rounded-xl shadow-sm p-6 mb-6">
+    <form method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+        <div class="flex flex-col sm:flex-row gap-4 items-end">
+            <div class="flex-1">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Select .xlsx file *</label>
+                <input type="file" name="file" accept=".xlsx"
+                       class="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-yellow-50 file:text-yellow-700 file:font-medium hover:file:bg-yellow-100 border border-gray-300 rounded-lg px-2 py-1.5" />
+            </div>
+            <button type="submit"
+                    class="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-white px-6 py-2.5 rounded-lg text-sm font-medium transition-colors">
+                <i class="bi bi-upload"></i> Import
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Resultado de la importación -->
+@if (Model.ImportLog.Any())
+{
+    <div class="bg-white rounded-xl shadow-sm p-6">
+        <h2 class="font-semibold text-gray-700 mb-4">
+            <i class="bi bi-journal-text mr-1 text-yellow-500"></i> Import Log
+        </h2>
+
+        <!-- Resumen -->
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-4 mb-5">
+            <div class="bg-green-50 rounded-lg p-4 text-center">
+                <p class="text-2xl font-bold text-green-600">@Model.ProductsInserted</p>
+                <p class="text-xs text-green-700 mt-1">Products inserted</p>
+            </div>
+            <div class="bg-blue-50 rounded-lg p-4 text-center">
+                <p class="text-2xl font-bold text-blue-600">@Model.ProductsUpdated</p>
+                <p class="text-xs text-blue-700 mt-1">Products updated</p>
+            </div>
+            <div class="bg-green-50 rounded-lg p-4 text-center">
+                <p class="text-2xl font-bold text-green-600">@Model.ClientsInserted</p>
+                <p class="text-xs text-green-700 mt-1">Clients inserted</p>
+            </div>
+            <div class="bg-blue-50 rounded-lg p-4 text-center">
+                <p class="text-2xl font-bold text-blue-600">@Model.ClientsUpdated</p>
+                <p class="text-xs text-blue-700 mt-1">Clients updated</p>
+            </div>
+            <div class="bg-purple-50 rounded-lg p-4 text-center">
+                <p class="text-2xl font-bold text-purple-600">@Model.SalesInserted</p>
+                <p class="text-xs text-purple-700 mt-1">Sales registered</p>
+            </div>
+        </div>
+
+
+        <!-- Log detallado -->
+        <div class="max-h-72 overflow-y-auto rounded-lg border border-gray-100 bg-gray-50 p-3 space-y-1">
+            @foreach (var line in Model.ImportLog)
+            {
+                var isError = line.StartsWith("✗") || line.StartsWith("ERROR");
+                var isOk    = line.StartsWith("✓");
+                <p class="text-xs font-mono @(isError ? "text-red-600" : isOk ? "text-green-700" : "text-gray-500")">
+                    @line
+                </p>
+            }
+        </div>
+    </div>
+}

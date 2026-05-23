@@ -1,0 +1,142 @@
+@page
+@model Firmeza.Web.Pages.Dashboard.IndexModel
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Admin")]
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<!-- Tarjetas de métricas -->
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
+
+    <!-- Total Products -->
+    <div class="bg-white rounded-xl shadow-sm p-5 flex items-center gap-4">
+        <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+            <i class="bi bi-box-seam text-blue-600 text-xl"></i>
+        </div>
+        <div>
+            <p class="text-sm text-gray-500">Total Products</p>
+            <p class="text-2xl font-bold text-gray-900">@Model.Stats.TotalProducts</p>
+        </div>
+    </div>
+
+    <!-- Total Clients -->
+    <div class="bg-white rounded-xl shadow-sm p-5 flex items-center gap-4">
+        <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+            <i class="bi bi-people text-green-600 text-xl"></i>
+        </div>
+        <div>
+            <p class="text-sm text-gray-500">Total Clients</p>
+            <p class="text-2xl font-bold text-gray-900">@Model.Stats.TotalClients</p>
+        </div>
+    </div>
+
+    <!-- Total Sales -->
+    <div class="bg-white rounded-xl shadow-sm p-5 flex items-center gap-4">
+        <div class="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center">
+            <i class="bi bi-receipt text-yellow-600 text-xl"></i>
+        </div>
+        <div>
+            <p class="text-sm text-gray-500">Total Sales</p>
+            <p class="text-2xl font-bold text-gray-900">@Model.Stats.TotalSales</p>
+        </div>
+    </div>
+
+    <!-- Revenue -->
+    <div class="bg-white rounded-xl shadow-sm p-5 flex items-center gap-4">
+        <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+            <i class="bi bi-currency-dollar text-purple-600 text-xl"></i>
+        </div>
+        <div>
+            <p class="text-sm text-gray-500">Total Revenue</p>
+            <p class="text-2xl font-bold text-gray-900">$@Model.Stats.TotalRevenue.ToString("N0")</p>
+        </div>
+    </div>
+</div>
+
+<!-- Tablas: ventas recientes + productos con poco stock -->
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+
+    <!-- Recent Sales -->
+    <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+            <h2 class="font-semibold text-gray-800">Recent Sales</h2>
+            <a href="/Sales" class="text-sm text-yellow-600 hover:underline">View all</a>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead class="bg-gray-50 text-gray-500 uppercase text-xs">
+                    <tr>
+                        <th class="px-5 py-3 text-left">#</th>
+                        <th class="px-5 py-3 text-left">Client</th>
+                        <th class="px-5 py-3 text-left">Total</th>
+                        <th class="px-5 py-3 text-left">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    @if (!Model.Stats.RecentSales.Any())
+                    {
+                        <tr>
+                            <td colspan="4" class="px-5 py-8 text-center text-gray-400">No sales yet</td>
+                        </tr>
+                    }
+                    @foreach (var sale in Model.Stats.RecentSales)
+                    {
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-5 py-3 text-gray-500">#@sale.SaleId</td>
+                            <td class="px-5 py-3 font-medium text-gray-800">@sale.ClientName</td>
+                            <td class="px-5 py-3">$@sale.Total.ToString("N2")</td>
+                            <td class="px-5 py-3">
+                                <span class="px-2 py-1 rounded-full text-xs font-medium
+                                    @(sale.Status == "Completed" ? "bg-green-100 text-green-700" :
+                                      sale.Status == "Cancelled" ? "bg-red-100 text-red-700" :
+                                      "bg-yellow-100 text-yellow-700")">
+                                    @sale.Status
+                                </span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Low Stock Alert -->
+    <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-100">
+            <h2 class="font-semibold text-gray-800">Low Stock Alert</h2>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead class="bg-gray-50 text-gray-500 uppercase text-xs">
+                    <tr>
+                        <th class="px-5 py-3 text-left">Product</th>
+                        <th class="px-5 py-3 text-left">Stock</th>
+                        <th class="px-5 py-3 text-left">Unit</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                    @if (!Model.Stats.LowStockProducts.Any())
+                    {
+                        <tr>
+                            <td colspan="3" class="px-5 py-8 text-center text-gray-400">
+                                <i class="bi bi-check-circle text-green-400 text-xl"></i>
+                                <p class="mt-1">All products are well stocked</p>
+                            </td>
+                        </tr>
+                    }
+                    @foreach (var item in Model.Stats.LowStockProducts)
+                    {
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-5 py-3 font-medium text-gray-800">@item.ProductName</td>
+                            <td class="px-5 py-3">
+                                <span class="font-semibold text-red-600">@item.Stock</span>
+                            </td>
+                            <td class="px-5 py-3 text-gray-500">@item.Unit</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

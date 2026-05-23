@@ -1,0 +1,90 @@
+@page
+@model Firmeza.Web.Pages.Clients.IndexModel
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Admin")]
+@{
+    ViewData["Title"] = "Clients";
+}
+
+<div class="flex items-center justify-between mb-6">
+    <p class="text-sm text-gray-500">Manage registered clients</p>
+    <a href="/Clients/Create"
+       class="inline-flex items-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg font-medium transition-colors text-sm">
+        <i class="bi bi-plus-lg"></i> New Client
+    </a>
+</div>
+
+<!-- Buscador -->
+<form method="get" class="bg-white rounded-xl shadow-sm p-4 mb-5 flex gap-3 flex-wrap">
+    <input type="text" name="search" value="@Model.Search"
+           placeholder="Search by name or document..."
+           class="flex-1 min-w-48 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500" />
+    <button type="submit"
+            class="bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-lg text-sm transition-colors">
+        <i class="bi bi-search"></i> Search
+    </button>
+    @if (!string.IsNullOrEmpty(Model.Search))
+    {
+        <a href="/Clients" class="border border-gray-300 hover:bg-gray-50 text-gray-600 px-4 py-2 rounded-lg text-sm transition-colors">
+            Clear
+        </a>
+    }
+</form>
+
+<!-- Tabla -->
+<div class="bg-white rounded-xl shadow-sm overflow-hidden">
+    <table class="w-full text-sm">
+        <thead class="bg-gray-50 text-gray-500 uppercase text-xs border-b border-gray-100">
+            <tr>
+                <th class="px-5 py-3 text-left">Client</th>
+                <th class="px-5 py-3 text-left">Document</th>
+                <th class="px-5 py-3 text-left">Email</th>
+                <th class="px-5 py-3 text-left">Phone</th>
+                <th class="px-5 py-3 text-left">Age</th>
+                <th class="px-5 py-3 text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+            @if (!Model.Clients.Any())
+            {
+                <tr>
+                    <td colspan="6" class="py-12 text-center text-gray-400">
+                        <i class="bi bi-people text-3xl mb-2 block"></i>
+                        No clients found
+                    </td>
+                </tr>
+            }
+            @foreach (var c in Model.Clients)
+            {
+                <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="px-5 py-4">
+                        <p class="font-medium text-gray-900">@c.FullName</p>
+                        <p class="text-xs text-gray-400">@c.Address</p>
+                    </td>
+                    <td class="px-5 py-4">
+                        <span class="bg-slate-100 text-slate-700 text-xs px-2 py-1 rounded-full">@c.DocumentType</span>
+                        <span class="text-gray-700 ml-1">@c.DocumentNumber</span>
+                    </td>
+                    <td class="px-5 py-4 text-gray-600">@c.Email</td>
+                    <td class="px-5 py-4 text-gray-600">@c.Phone</td>
+                    <td class="px-5 py-4 text-gray-600">@c.Age</td>
+                    <td class="px-5 py-4 text-center">
+                        <div class="inline-flex gap-2">
+                            <a href="/Clients/Edit?id=@c.Id"
+                               class="p-1.5 text-slate-600 hover:text-yellow-600 hover:bg-yellow-50 rounded-lg transition-colors" title="Edit">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a href="/Clients/Delete?id=@c.Id"
+                               class="p-1.5 text-slate-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Delete">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="px-5 py-3 border-t border-gray-100 text-xs text-gray-400">
+        @Model.Clients.Count client(s) found
+    </div>
+</div>

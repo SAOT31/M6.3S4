@@ -1,0 +1,106 @@
+@page
+@model Firmeza.Web.Pages.Clients.EditModel
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Admin")]
+@{
+    ViewData["Title"] = "Edit Client";
+}
+
+<div class="max-w-2xl">
+    <a href="/Clients" class="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 mb-6">
+        <i class="bi bi-arrow-left"></i> Back to Clients
+    </a>
+
+    <div class="bg-white rounded-xl shadow-sm p-8">
+
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <div class="bg-red-50 border border-red-200 text-red-700 rounded-lg px-4 py-3 mb-6 text-sm flex items-center gap-2">
+                <i class="bi bi-exclamation-circle-fill"></i>
+                @Model.ErrorMessage
+            </div>
+        }
+
+        <form method="post" class="space-y-5">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Client.Id" />
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label asp-for="Client.FirstName" class="block text-sm font-medium text-gray-700 mb-1"></label>
+                    <input asp-for="Client.FirstName"
+                           class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500" />
+                    <span asp-validation-for="Client.FirstName" class="text-red-500 text-xs mt-1 block"></span>
+                </div>
+                <div>
+                    <label asp-for="Client.LastName" class="block text-sm font-medium text-gray-700 mb-1"></label>
+                    <input asp-for="Client.LastName"
+                           class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500" />
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label asp-for="Client.DocumentType" class="block text-sm font-medium text-gray-700 mb-1"></label>
+                    <select asp-for="Client.DocumentType"
+                            class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                        @foreach (var dt in Firmeza.Web.ViewModels.ClientViewModel.DocumentTypes)
+                        {
+                            <option value="@dt">@dt</option>
+                        }
+                    </select>
+                </div>
+                <div>
+                    <label asp-for="Client.DocumentNumber" class="block text-sm font-medium text-gray-700 mb-1"></label>
+                    <input asp-for="Client.DocumentNumber"
+                           class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500" />
+                </div>
+            </div>
+
+            <div>
+                <label asp-for="Client.Email" class="block text-sm font-medium text-gray-700 mb-1"></label>
+                <input asp-for="Client.Email" type="email"
+                       class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500" />
+                <span asp-validation-for="Client.Email" class="text-red-500 text-xs mt-1 block"></span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label asp-for="Client.Phone" class="block text-sm font-medium text-gray-700 mb-1"></label>
+                    <input asp-for="Client.Phone"
+                           class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500" />
+                </div>
+                <div>
+                    <label asp-for="Client.AgeInput" class="block text-sm font-medium text-gray-700 mb-1">Age</label>
+                    <input asp-for="Client.AgeInput"
+                           class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500" />
+                    @if (!string.IsNullOrEmpty(Model.AgeError))
+                    {
+                        <p class="text-red-500 text-xs mt-1">@Model.AgeError</p>
+                    }
+                </div>
+            </div>
+
+            <div>
+                <label asp-for="Client.Address" class="block text-sm font-medium text-gray-700 mb-1"></label>
+                <input asp-for="Client.Address"
+                       class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500" />
+            </div>
+
+            <div class="flex gap-3 pt-2">
+                <button type="submit"
+                        class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2.5 rounded-lg font-medium text-sm transition-colors">
+                    Save Changes
+                </button>
+                <a href="/Clients"
+                   class="border border-gray-300 hover:bg-gray-50 text-gray-700 px-6 py-2.5 rounded-lg font-medium text-sm transition-colors">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

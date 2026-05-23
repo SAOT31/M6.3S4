@@ -1,0 +1,98 @@
+@page
+@model Firmeza.Web.Pages.Sales.IndexModel
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize(Roles = "Admin")]
+@{
+    ViewData["Title"] = "Sales";
+}
+
+<div class="flex items-center justify-between mb-6">
+    <p class="text-sm text-gray-500">Sales history and status tracking</p>
+    <a href="/Sales/Create"
+       class="flex items-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+        <i class="bi bi-plus-lg"></i> New Sale
+    </a>
+</div>
+
+<!-- Filtro de estado -->
+<form method="get" class="bg-white rounded-xl shadow-sm p-4 mb-5 flex gap-3 flex-wrap">
+    <input type="text" name="search" value="@Model.Search"
+           placeholder="Search by client name..."
+           class="flex-1 min-w-48 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500" />
+    <select name="status"
+            class="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500">
+        <option value="">All Statuses</option>
+        <option value="Pending"   selected="@(Model.Status == "Pending")">Pending</option>
+        <option value="Completed" selected="@(Model.Status == "Completed")">Completed</option>
+        <option value="Cancelled" selected="@(Model.Status == "Cancelled")">Cancelled</option>
+    </select>
+    <button type="submit"
+            class="bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-lg text-sm transition-colors">
+        <i class="bi bi-search"></i> Search
+    </button>
+    @if (!string.IsNullOrEmpty(Model.Search) || !string.IsNullOrEmpty(Model.Status))
+    {
+        <a href="/Sales" class="border border-gray-300 hover:bg-gray-50 text-gray-600 px-4 py-2 rounded-lg text-sm transition-colors">
+            Clear
+        </a>
+    }
+</form>
+
+<!-- Tabla de ventas -->
+<div class="bg-white rounded-xl shadow-sm overflow-hidden">
+    <table class="w-full text-sm">
+        <thead class="bg-gray-50 text-gray-500 uppercase text-xs border-b border-gray-100">
+            <tr>
+                <th class="px-5 py-3 text-left"># Sale</th>
+                <th class="px-5 py-3 text-left">Client</th>
+                <th class="px-5 py-3 text-left">Date</th>
+                <th class="px-5 py-3 text-left">Items</th>
+                <th class="px-5 py-3 text-left">Total</th>
+                <th class="px-5 py-3 text-left">Status</th>
+                                <th class="px-5 py-3 text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+            @if (!Model.Sales.Any())
+            {
+                <tr>
+                    <td colspan="7" class="py-12 text-center text-gray-400">
+                        <i class="bi bi-receipt text-3xl mb-2 block"></i>
+                        No sales found
+                    </td>
+                </tr>
+            }
+            @foreach (var s in Model.Sales)
+            {
+                <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="px-5 py-4 font-mono text-gray-500">#@s.Id</td>
+                    <td class="px-5 py-4 font-medium text-gray-900">@s.Client.FullName</td>
+                    <td class="px-5 py-4 text-gray-600">@s.SaleDate.ToString("MMM dd, yyyy")</td>
+                    <td class="px-5 py-4 text-gray-600">@s.Details.Count item(s)</td>
+                    <td class="px-5 py-4 font-semibold text-gray-800">$@s.Total.ToString("N2")</td>
+                    <td class="px-5 py-4">
+                        <span class="px-2 py-1 rounded-full text-xs font-medium
+                            @(s.Status == "Completed" ? "bg-green-100 text-green-700" :
+                              s.Status == "Cancelled" ? "bg-red-100 text-red-700" :
+                              "bg-yellow-100 text-yellow-700")">
+                            @s.Status
+                        </span>
+                    </td>
+                    <td class="px-5 py-4 text-center">
+                        <a href="/Sales/Detail?id=@s.Id"
+                           class="p-1.5 text-slate-600 hover:text-yellow-600 hover:bg-yellow-50 rounded-lg transition-colors" title="View detail">
+                            <i class="bi bi-eye"></i>
+                        </a>
+                        <a href="/Sales?handler=DownloadReceipt&id=@s.Id" target="_blank"
+                           class="p-1.5 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors" title="Download Receipt PDF">
+                            <i class="bi bi-file-earmark-pdf"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="px-5 py-3 border-t border-gray-100 text-xs text-gray-400">
+        @Model.Sales.Count sale(s) found
+    </div>
+</div>

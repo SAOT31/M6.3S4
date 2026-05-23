@@ -1,0 +1,208 @@
+@page
+@model Firmeza.Web.Pages.Sales.CreateModel
+@attribute [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
+@{
+    ViewData["Title"] = "New Sale";
+}
+
+<div class="flex items-center justify-between mb-6">
+    <p class="text-sm text-gray-500">Register a new sale and generate the PDF receipt automatically.</p>
+    <a href="/Sales" class="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-800 transition-colors">
+        <i class="bi bi-arrow-left"></i> Back to Sales
+    </a>
+</div>
+
+@if (Model.ErrorMessage is not null)
+{
+    <div class="bg-red-50 border border-red-200 text-red-700 rounded-xl px-5 py-4 mb-5 flex items-center gap-3">
+        <i class="bi bi-exclamation-triangle-fill text-lg"></i>
+        <span>@Model.ErrorMessage</span>
+    </div>
+}
+
+<form method="post" id="saleForm">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="CartJson" id="cartJson" />
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- Cliente -->
+        <div class="lg:col-span-1">
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h2 class="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-4">
+                    <i class="bi bi-person-fill mr-1 text-yellow-500"></i> Client
+                </h2>
+                <div>
+                    <label class="block text-xs font-medium text-gray-600 mb-1">Select client *</label>
+                    <select asp-for="ClientId"
+                            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                            required>
+                        <option value="">— Choose a client —</option>
+                        @foreach (var c in Model.Clients)
+                        {
+                            <option value="@c.Id">@c.FullName — @c.DocumentNumber</option>
+                        }
+                    </select>
+                    <span asp-validation-for="ClientId" class="text-red-500 text-xs"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Agregar productos -->
+        <div class="lg:col-span-2">
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h2 class="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-4">
+                    <i class="bi bi-box-seam mr-1 text-yellow-500"></i> Products
+                </h2>
+
+                <!-- Selector de producto -->
+                <div class="flex gap-3 mb-4">
+                    <select id="productSelect" class="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                        <option value="">— Select a product —</option>
+                        @foreach (var p in Model.Products)
+                        {
+                            <option value="@p.Id" data-name="@p.Name" data-price="@p.Price" data-stock="@p.Stock" data-unit="@p.Unit">
+                                @p.Name — $@p.Price.ToString("N2") / @p.Unit (stock: @p.Stock)
+                            </option>
+                        }
+                    </select>
+                    <input type="number" id="qtyInput" min="1" value="1" placeholder="Qty"
+                           class="w-24 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500" />
+                    <button type="button" onclick="addItem()"
+                            class="bg-yellow-500 hover:bg-yellow-400 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                        <i class="bi bi-plus-lg"></i> Add
+                    </button>
+                </div>
+
+                <!-- Tabla del carrito -->
+                <div class="overflow-x-auto rounded-lg border border-gray-100">
+                    <table class="w-full text-sm" id="cartTable">
+                        <thead class="bg-gray-50 text-gray-500 uppercase text-xs border-b border-gray-100">
+                            <tr>
+                                <th class="px-4 py-3 text-left">Product</th>
+                                <th class="px-4 py-3 text-center">Qty</th>
+                                <th class="px-4 py-3 text-right">Unit Price</th>
+                                <th class="px-4 py-3 text-right">Subtotal</th>
+                                <th class="px-4 py-3 text-center">Remove</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cartBody" class="divide-y divide-gray-100">
+                            <tr id="emptyRow">
+                                <td colspan="5" class="px-4 py-8 text-center text-gray-400 text-sm">
+                                    <i class="bi bi-cart text-2xl block mb-1"></i>
+                                    No products added yet
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot id="cartFoot" class="hidden">
+                            <tr class="bg-gray-50 font-semibold">
+                                <td colspan="3" class="px-4 py-3 text-right text-gray-700">Subtotal:</td>
+                                <td class="px-4 py-3 text-right text-gray-800" id="totalDisplay">$0.00</td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botón guardar -->
+    <div class="mt-6 flex justify-end gap-3">
+        <a href="/Sales" class="px-5 py-2.5 border border-gray-300 text-gray-600 rounded-lg text-sm hover:bg-gray-50 transition-colors">
+            Cancel
+        </a>
+        <button type="submit" id="submitBtn"
+                class="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-white px-6 py-2.5 rounded-lg text-sm font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+            <i class="bi bi-receipt"></i> Save Sale & Generate Receipt
+        </button>
+    </div>
+</form>
+
+@section Scripts {
+<script>
+    // Carrito en memoria: [{productId, name, price, qty}]
+    let cart = [];
+
+    function addItem() {
+        const sel   = document.getElementById('productSelect');
+        const qty   = parseInt(document.getElementById('qtyInput').value);
+        const opt   = sel.selectedOptions[0];
+
+        if (!opt || !opt.value) return alert('Please select a product.');
+        if (!qty || qty < 1)   return alert('Quantity must be at least 1.');
+
+        const stock = parseInt(opt.dataset.stock);
+        if (qty > stock)       return alert(`Only ${stock} units in stock.`);
+
+        const id    = parseInt(opt.value);
+        const name  = opt.dataset.name;
+        const price = parseFloat(opt.dataset.price);
+
+        // Si ya existe, suma cantidad
+        const existing = cart.find(i => i.productId === id);
+        if (existing) {
+            existing.qty += qty;
+        } else {
+            cart.push({ productId: id, name, price, qty });
+        }
+
+        renderCart();
+        sel.value = '';
+        document.getElementById('qtyInput').value = 1;
+    }
+
+    function removeItem(id) {
+        cart = cart.filter(i => i.productId !== id);
+        renderCart();
+    }
+
+    function renderCart() {
+        const body  = document.getElementById('cartBody');
+        const foot  = document.getElementById('cartFoot');
+        const empty = document.getElementById('emptyRow');
+        const totalEl = document.getElementById('totalDisplay');
+        const cartJsonInput = document.getElementById('cartJson');
+
+        if (cart.length === 0) {
+            body.innerHTML = '';
+            body.appendChild(empty);
+            foot.classList.add('hidden');
+            cartJsonInput.value = '[]';
+            return;
+        }
+
+        let total = 0;
+        let rows  = '';
+        cart.forEach(item => {
+            const sub = item.price * item.qty;
+            total += sub;
+            rows += `<tr class="hover:bg-gray-50">
+                <td class="px-4 py-3 font-medium text-gray-800">${item.name}</td>
+                <td class="px-4 py-3 text-center">${item.qty}</td>
+                <td class="px-4 py-3 text-right">$${item.price.toFixed(2)}</td>
+                <td class="px-4 py-3 text-right font-semibold">$${sub.toFixed(2)}</td>
+                <td class="px-4 py-3 text-center">
+                    <button type="button" onclick="removeItem(${item.productId})"
+                            class="text-red-400 hover:text-red-600 transition-colors text-base">
+                        <i class="bi bi-trash3"></i>
+                    </button>
+                </td>
+            </tr>`;
+        });
+
+        body.innerHTML = rows;
+        foot.classList.remove('hidden');
+        totalEl.textContent = '$' + total.toFixed(2);
+        cartJsonInput.value = JSON.stringify(cart.map(i => ({ productId: i.productId, qty: i.qty })));
+    }
+
+    // Validar antes de enviar
+    document.getElementById('saleForm').addEventListener('submit', e => {
+        if (cart.length === 0) {
+            e.preventDefault();
+            alert('Please add at least one product before saving.');
+        }
+    });
+</script>
+}

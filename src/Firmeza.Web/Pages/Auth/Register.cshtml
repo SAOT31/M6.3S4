@@ -1,0 +1,117 @@
+@page
+@model Firmeza.Web.Pages.Auth.RegisterModel
+@{
+    Layout = null;
+    ViewData["Title"] = "Create Account";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register – Firmeza</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <style> body { font-family: 'Inter', sans-serif; } </style>
+</head>
+<body class="bg-slate-900 min-h-screen flex items-center justify-center py-10">
+
+    <div class="w-full max-w-md px-4">
+        <div class="bg-white rounded-2xl shadow-2xl p-8">
+
+            <!-- Logo -->
+            <div class="text-center mb-6">
+                <div class="inline-flex items-center justify-center w-14 h-14 bg-yellow-500 rounded-2xl mb-3">
+                    <i class="bi bi-building text-white text-2xl"></i>
+                </div>
+                <h1 class="text-2xl font-bold text-gray-900">Create Account</h1>
+                <p class="text-gray-500 text-sm mt-1">Register as a Firmeza client</p>
+            </div>
+
+            <!-- Error general -->
+            @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+            {
+                <div class="bg-red-50 border border-red-200 text-red-700 rounded-lg px-4 py-3 mb-5 flex items-center gap-2 text-sm">
+                    <i class="bi bi-exclamation-circle-fill"></i>
+                    @Model.ErrorMessage
+                </div>
+            }
+
+            <form method="post" class="space-y-4">
+                @Html.AntiForgeryToken()
+
+                <!-- Nombre y Apellido -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                        <input asp-for="Input.FirstName"
+                               class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                               placeholder="John" />
+                        <span asp-validation-for="Input.FirstName" class="text-red-500 text-xs"></span>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                        <input asp-for="Input.LastName"
+                               class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                               placeholder="Doe" />
+                        <span asp-validation-for="Input.LastName" class="text-red-500 text-xs"></span>
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <div class="relative">
+                        <i class="bi bi-envelope absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input asp-for="Input.Email" type="email"
+                               class="w-full pl-10 border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                               placeholder="john@example.com" />
+                    </div>
+                    <span asp-validation-for="Input.Email" class="text-red-500 text-xs"></span>
+                </div>
+
+                <!-- Password -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <div class="relative">
+                        <i class="bi bi-lock absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input asp-for="Input.Password" type="password"
+                               class="w-full pl-10 border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                               placeholder="Min. 6 characters" />
+                    </div>
+                    <span asp-validation-for="Input.Password" class="text-red-500 text-xs"></span>
+                </div>
+
+                <!-- Confirm Password -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
+                    <div class="relative">
+                        <i class="bi bi-lock-fill absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input asp-for="Input.ConfirmPassword" type="password"
+                               class="w-full pl-10 border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                               placeholder="Repeat password" />
+                    </div>
+                    <span asp-validation-for="Input.ConfirmPassword" class="text-red-500 text-xs"></span>
+                </div>
+
+                <button type="submit"
+                        class="w-full bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2.5 rounded-lg transition-colors mt-2">
+                    Create Account
+                </button>
+            </form>
+
+            <p class="text-center text-sm text-gray-500 mt-5">
+                Already have an account?
+                <a href="/Auth/Login" class="text-yellow-600 hover:underline font-medium">Sign in</a>
+            </p>
+
+            <p class="text-center text-xs text-gray-400 mt-3">
+                Note: client accounts cannot access the admin panel.
+            </p>
+        </div>
+    </div>
+
+</body>
+</html>
