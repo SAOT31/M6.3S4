@@ -1,0 +1,56 @@
+services:
+
+  db:
+    image: postgres:16
+    container_name: firmeza_db
+    environment:
+      POSTGRES_DB:       firmeza_db
+      POSTGRES_USER:     postgres
+      POSTGRES_PASSWORD: admin123
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build:
+      context: .
+      dockerfile: src/Firmeza.Web/Dockerfile
+    container_name: firmeza_web
+    ports:
+      - "8080:8080"
+    environment:
+      ConnectionStrings__DefaultConnection: "Host=db;Port=5432;Database=firmeza_db;Username=postgres;Password=admin123"
+      ASPNETCORE_ENVIRONMENT: Production
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - recibos_data:/app/wwwroot/recibos
+
+  api:
+    build:
+      context: .
+      dockerfile: src/Firmeza.Api/Dockerfile
+    container_name: firmeza_api
+    ports:
+      - "5000:8080"
+    environment:
+      ConnectionStrings__DefaultConnection: "Host=db;Port=5432;Database=firmeza_db;Username=postgres;Password=admin123"
+      ASPNETCORE_ENVIRONMENT: Production
+      JwtSettings__Secret: "SuperSecretKeyThatIsAtLeast32CharactersLongAndSecure123!"
+      JwtSettings__Issuer: "FirmezaApi"
+      JwtSettings__Audience: "FirmezaClient"
+      JwtSettings__ExpiryInMinutes: "60"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+  recibos_data:
