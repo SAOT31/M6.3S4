@@ -1,3 +1,4 @@
+using Firmeza.Core.Entities;
 using Firmeza.Core.Enums;
 using Firmeza.Core.Services;
 using Firmeza.Infrastructure.Data;
@@ -115,6 +116,26 @@ static async Task SeedDatabase(WebApplication app)
             var result = await userManager.CreateAsync(admin, "Admin123!");
             if (result.Succeeded)
                 await userManager.AddToRoleAsync(admin, AppRoles.Admin);
+        }
+
+        // Seeding de productos por defecto (Materiales y Vehículos)
+        if (!await context.Products.AnyAsync())
+        {
+            var defaultProducts = new List<Product>
+            {
+                new Product { Name = "Cemento Gris Especial 50kg", Description = "Cemento gris de alta resistencia para todo tipo de obras y mezclas de concreto.", Category = "Materiales", Unit = "Bolsa", Price = 28500m, Stock = 150 },
+                new Product { Name = "Varilla Corrugada 1/2 pulgada", Description = "Varilla de acero de 1/2 pulgada de diámetro, longitud de 6 metros para refuerzo estructural.", Category = "Materiales", Unit = "Unidad", Price = 32000m, Stock = 200 },
+                new Product { Name = "Ladrillo Limpio Arcilla", Description = "Ladrillo de arcilla cocida para muros estructurales y divisiones.", Category = "Materiales", Unit = "Unidad", Price = 1200m, Stock = 1000 },
+                new Product { Name = "Arena de Río Lavada", Description = "Arena fina lavada ideal para pañete, mortero y acabados.", Category = "Materiales", Unit = "M3", Price = 65000m, Stock = 80 },
+                new Product { Name = "Pintura Acrílica Exterior Blanco Galón", Description = "Pintura vinilo acrílica tipo 1 de alta durabilidad y resistencia a la intemperie.", Category = "Materiales", Unit = "Galón", Price = 48000m, Stock = 45 },
+                
+                new Product { Name = "Camión Volqueta Dobletroque", Description = "Alquiler de camión volqueta dobletroque de 15m³ de capacidad con operario calificado.", Category = "Vehículos", Unit = "Día", Price = 450000m, Stock = 5 },
+                new Product { Name = "Mezcladora de Concreto 1 Bulto", Description = "Alquiler de trompo mezclador de concreto con motor a gasolina de 9HP.", Category = "Vehículos", Unit = "Día", Price = 85000m, Stock = 12 },
+                new Product { Name = "Miniexcavadora Orugas", Description = "Alquiler de miniexcavadora con balde de 0.1m³ y orugas de goma, ideal para excavaciones en espacios reducidos.", Category = "Vehículos", Unit = "Día", Price = 600000m, Stock = 3 },
+                new Product { Name = "Camión Mixer Hormigonera", Description = "Alquiler de camión mezclador de concreto de 8m³ con conductor y operario de bomba.", Category = "Vehículos", Unit = "Día", Price = 950000m, Stock = 2 }
+            };
+            await context.Products.AddRangeAsync(defaultProducts);
+            await context.SaveChangesAsync();
         }
     }
     catch (Exception ex)

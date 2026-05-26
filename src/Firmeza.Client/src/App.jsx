@@ -44,8 +44,8 @@ function App() {
   // Catálogo de Productos
   const [products, setProducts] = useState([])
   const [searchQuery, setSearchQuery] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState('Todos')
-  const [categories, setCategories] = useState(['Todos'])
+  const [selectedCategory, setSelectedCategory] = useState('All')
+  const [categories, setCategories] = useState(['All'])
   
   // Carrito de Compras
   const [cart, setCart] = useState([])
@@ -69,12 +69,12 @@ function App() {
         const now = new Date().getTime()
         if (now >= expTime) {
           handleLogout()
-          setErrorMsg('Tu sesión ha expirado. Por favor inicia sesión nuevamente.')
+          setErrorMsg('Your session has expired. Please log in again.')
         } else {
           // Configurar timeout para auto-logout al expirar
           const timeout = setTimeout(() => {
             handleLogout()
-            setErrorMsg('Tu sesión ha expirado.')
+            setErrorMsg('Your session has expired.')
           }, expTime - now)
           return () => clearTimeout(timeout)
         }
@@ -109,7 +109,7 @@ function App() {
       })
       if (!res.ok) {
         if (res.status === 401) handleLogout()
-        throw new Error('Error al consultar clientes.')
+        throw new Error('Error querying clients.')
       }
       const data = await res.json()
       const matched = data.find(c => c.email.toLowerCase() === user.email.toLowerCase())
@@ -137,7 +137,7 @@ function App() {
     
     const ageNum = parseInt(profileForm.age)
     if (isNaN(ageNum) || ageNum <= 0) {
-      setErrorMsg('La edad debe ser un número entero válido.')
+      setErrorMsg('Age must be a valid integer.')
       setIsLoading(false)
       return
     }
@@ -163,7 +163,7 @@ function App() {
 
       if (!res.ok) {
         const errorText = await res.text()
-        throw new Error(errorText || 'Error al guardar los datos de cliente.')
+        throw new Error(errorText || 'Error saving client details.')
       }
 
       const newClient = await res.json()
@@ -171,7 +171,7 @@ function App() {
       setClientProfile(newClient)
       localStorage.setItem('clientId', newClient.id)
       setNeedsProfileSetup(false)
-      setSuccessMsg('¡Perfil configurado con éxito! Bienvenido a Firmeza.')
+      setSuccessMsg('Profile configured successfully! Welcome to Firmeza.')
     } catch (err) {
       setErrorMsg(err.message)
     } finally {
@@ -203,12 +203,12 @@ function App() {
       if (!res.ok) {
         const errorData = await res.json()
         const errMsg = Array.isArray(errorData) ? errorData.map(e => e.description).join(', ') : errorData;
-        throw new Error(errMsg || 'Error en el registro.')
+        throw new Error(errMsg || 'Registration error.')
       }
 
       const data = await res.json()
       saveAuthSession(data)
-      setSuccessMsg('Registro exitoso.')
+      setSuccessMsg('Registration successful.')
     } catch (err) {
       setErrorMsg(err.message)
     } finally {
@@ -237,13 +237,13 @@ function App() {
 
       if (!res.ok) {
         const errorText = await res.text()
-        throw new Error(errorText || 'Credenciales inválidas.')
+        throw new Error(errorText || 'Invalid credentials.')
       }
 
       const data = await res.json()
       // Validar si cuenta con rol Cliente
       if (!data.roles.includes('Cliente') && !data.roles.includes('Admin')) {
-        throw new Error('Solo los clientes autorizados pueden acceder al portal de compras.')
+        throw new Error('Only authorized clients can access the shopping portal.')
       }
 
       saveAuthSession(data)
@@ -354,7 +354,7 @@ function App() {
 
   // Cálculos del Carrito
   const cartSubtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0)
-  const cartTax = Math.Round ? Math.round(cartSubtotal * 0.19 * 100) / 100 : cartSubtotal * 0.19
+  const cartTax = Math.round(cartSubtotal * 0.19 * 100) / 100
   const cartTotal = cartSubtotal + cartTax
 
   // Finalizar Compra
@@ -458,24 +458,24 @@ function App() {
           <div className="w-full max-w-md bg-slate-900/60 backdrop-blur-xl border border-slate-800 p-8 rounded-2xl shadow-2xl relative z-10">
             <div className="text-center mb-8">
               <h1 className="text-4xl font-extrabold tracking-tight text-amber-500 m-0">FIRMEZA</h1>
-              <p className="text-slate-400 text-sm mt-1">Portal de Clientes</p>
+              <p className="text-slate-400 text-sm mt-1">Customer Portal</p>
             </div>
 
             {authMode === 'login' ? (
               <form onSubmit={handleLogin} className="space-y-5">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Correo Electrónico</label>
+                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Email Address</label>
                   <input 
                     type="email" 
                     required 
                     value={loginEmail}
                     onChange={(e) => setLoginEmail(e.target.value)}
-                    placeholder="usuario@correo.com"
+                    placeholder="user@email.com"
                     className="w-full px-4 py-3 rounded-lg bg-slate-950 border border-slate-850 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 text-slate-100 placeholder-slate-600 focus:outline-none transition-all"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Contraseña</label>
+                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Password</label>
                   <input 
                     type="password" 
                     required 
@@ -490,39 +490,39 @@ function App() {
                   disabled={isLoading}
                   className="w-full py-3 bg-amber-500 hover:bg-amber-600 active:scale-[0.98] disabled:opacity-50 text-slate-950 font-bold rounded-lg transition-all shadow-lg shadow-amber-500/10"
                 >
-                  {isLoading ? 'Ingresando...' : 'Iniciar Sesión'}
+                  {isLoading ? 'Logging in...' : 'Log In'}
                 </button>
                 <p className="text-center text-xs text-slate-500 mt-4">
-                  ¿No tienes una cuenta?{' '}
-                  <button type="button" onClick={() => setAuthMode('register')} className="text-amber-500 hover:underline">Regístrate</button>
+                  Don't have an account?{' '}
+                  <button type="button" onClick={() => setAuthMode('register')} className="text-amber-500 hover:underline">Register</button>
                 </p>
               </form>
             ) : (
               <form onSubmit={handleRegister} className="space-y-5">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Nombre Completo</label>
+                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Full Name</label>
                   <input 
                     type="text" 
                     required 
                     value={regName}
                     onChange={(e) => setRegName(e.target.value)}
-                    placeholder="Juan Pérez"
+                    placeholder="John Doe"
                     className="w-full px-4 py-3 rounded-lg bg-slate-950 border border-slate-850 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 text-slate-100 placeholder-slate-600 focus:outline-none transition-all"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Correo Electrónico</label>
+                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Email Address</label>
                   <input 
                     type="email" 
                     required 
                     value={regEmail}
                     onChange={(e) => setRegEmail(e.target.value)}
-                    placeholder="usuario@correo.com"
+                    placeholder="user@email.com"
                     className="w-full px-4 py-3 rounded-lg bg-slate-950 border border-slate-850 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 text-slate-100 placeholder-slate-600 focus:outline-none transition-all"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Contraseña (Mínimo 6 carac.)</label>
+                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Password (Minimum 6 chars)</label>
                   <input 
                     type="password" 
                     required 
@@ -537,11 +537,11 @@ function App() {
                   disabled={isLoading}
                   className="w-full py-3 bg-amber-500 hover:bg-amber-600 active:scale-[0.98] disabled:opacity-50 text-slate-950 font-bold rounded-lg transition-all shadow-lg shadow-amber-500/10"
                 >
-                  {isLoading ? 'Registrando...' : 'Registrarse'}
+                  {isLoading ? 'Registering...' : 'Register'}
                 </button>
                 <p className="text-center text-xs text-slate-500 mt-4">
-                  ¿Ya tienes una cuenta?{' '}
-                  <button type="button" onClick={() => setAuthMode('login')} className="text-amber-500 hover:underline">Inicia Sesión</button>
+                  Already have an account?{' '}
+                  <button type="button" onClick={() => setAuthMode('login')} className="text-amber-500 hover:underline">Log In</button>
                 </p>
               </form>
             )}
@@ -552,31 +552,31 @@ function App() {
         <div className="min-h-screen flex items-center justify-center px-4 bg-slate-950 text-slate-100 py-10">
           <div className="w-full max-w-xl bg-slate-900 border border-slate-800 p-8 rounded-2xl shadow-2xl">
             <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold text-amber-500">Completa tu Perfil</h2>
-              <p className="text-slate-400 text-sm mt-1">Para realizar compras y recibir tus comprobantes, necesitamos asociar tus datos de cliente.</p>
+              <h2 className="text-2xl font-bold text-amber-500">Complete Your Profile</h2>
+              <p className="text-slate-400 text-sm mt-1">To make purchases and receive your receipts, we need to associate your customer details.</p>
             </div>
             
             <form onSubmit={handleCreateProfile} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Nombre</label>
+                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">First Name</label>
                   <input 
                     type="text" 
                     required 
                     value={profileForm.firstName}
                     onChange={(e) => setProfileForm({...profileForm, firstName: e.target.value})}
-                    placeholder="Juan"
+                    placeholder="John"
                     className="w-full px-4 py-2.5 rounded-lg bg-slate-950 border border-slate-800 focus:border-amber-500 focus:outline-none text-sm"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Apellido</label>
+                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Last Name</label>
                   <input 
                     type="text" 
                     required 
                     value={profileForm.lastName}
                     onChange={(e) => setProfileForm({...profileForm, lastName: e.target.value})}
-                    placeholder="Pérez"
+                    placeholder="Doe"
                     className="w-full px-4 py-2.5 rounded-lg bg-slate-950 border border-slate-800 focus:border-amber-500 focus:outline-none text-sm"
                   />
                 </div>
@@ -584,19 +584,19 @@ function App() {
 
               <div className="grid grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Tipo Doc.</label>
+                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Doc. Type</label>
                   <select 
                     value={profileForm.documentType}
                     onChange={(e) => setProfileForm({...profileForm, documentType: e.target.value})}
                     className="w-full px-4 py-2.5 rounded-lg bg-slate-950 border border-slate-800 focus:border-amber-500 focus:outline-none text-sm text-slate-300"
                   >
-                    <option value="CC">Cédula (CC)</option>
-                    <option value="NIT">NIT</option>
-                    <option value="CE">Cédula Ext.</option>
+                    <option value="CC">ID Card (CC)</option>
+                    <option value="NIT">Tax ID (NIT)</option>
+                    <option value="CE">Foreign ID (CE)</option>
                   </select>
                 </div>
                 <div className="col-span-2">
-                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Número Documento</label>
+                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Document Number</label>
                   <input 
                     type="text" 
                     required 
@@ -610,7 +610,7 @@ function App() {
 
               <div className="grid grid-cols-3 gap-4">
                 <div className="col-span-2">
-                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Teléfono</label>
+                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Phone</label>
                   <input 
                     type="text" 
                     required 
@@ -621,7 +621,7 @@ function App() {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Edad</label>
+                  <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Age</label>
                   <input 
                     type="number" 
                     required 
@@ -636,13 +636,13 @@ function App() {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Dirección de Envío</label>
+                <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Shipping Address</label>
                 <input 
                   type="text" 
                   required 
                   value={profileForm.address}
                   onChange={(e) => setProfileForm({...profileForm, address: e.target.value})}
-                  placeholder="Calle 123 #45-67"
+                  placeholder="Street 123 #45-67"
                   className="w-full px-4 py-2.5 rounded-lg bg-slate-950 border border-slate-800 focus:border-amber-500 focus:outline-none text-sm"
                 />
               </div>
@@ -653,7 +653,7 @@ function App() {
                   disabled={isLoading}
                   className="w-full py-3 bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-slate-950 font-bold rounded-lg transition-all text-sm"
                 >
-                  {isLoading ? 'Registrando...' : 'Finalizar Registro'}
+                  {isLoading ? 'Registering...' : 'Complete Registration'}
                 </button>
               </div>
             </form>
@@ -672,13 +672,13 @@ function App() {
                     onClick={() => { setActiveTab('catalog'); setCheckoutSuccess(null); }}
                     className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-all ${activeTab === 'catalog' ? 'bg-slate-900 text-amber-500 border border-slate-800' : 'text-slate-400 hover:text-slate-200'}`}
                   >
-                    Catálogo
+                    Catalog
                   </button>
                   <button 
                     onClick={() => { setActiveTab('history'); setCheckoutSuccess(null); }}
                     className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-all ${activeTab === 'history' ? 'bg-slate-900 text-amber-500 border border-slate-800' : 'text-slate-400 hover:text-slate-200'}`}
                   >
-                    Mis Compras
+                    My Purchases
                   </button>
                 </nav>
               </div>
@@ -704,7 +704,7 @@ function App() {
                 <button 
                   onClick={handleLogout}
                   className="p-2 bg-slate-900/50 hover:bg-red-950 border border-slate-900 hover:border-red-900 rounded-lg text-slate-400 hover:text-red-200 transition-all"
-                  title="Cerrar Sesión"
+                  title="Log Out"
                 >
                   <LogOut className="w-5 h-5" />
                 </button>
@@ -721,23 +721,23 @@ function App() {
                 <div className="w-16 h-16 bg-emerald-950 border border-emerald-500 text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-6">
                   <CheckCircle className="w-10 h-10" />
                 </div>
-                <h2 className="text-3xl font-extrabold text-white mb-2">¡Compra Completada!</h2>
+                <h2 className="text-3xl font-extrabold text-white mb-2">Purchase Completed!</h2>
                 <p className="text-slate-400 text-sm mb-6">
-                  La transacción se ha realizado de forma segura. Se ha enviado el comprobante oficial en PDF al correo electrónico{' '}
+                  The transaction has been processed securely. The official PDF receipt has been sent to your email{' '}
                   <span className="text-amber-500 font-semibold">{clientProfile?.email}</span>.
                 </p>
 
                 <div className="bg-slate-950 border border-slate-900 rounded-xl p-4 mb-8 text-left space-y-2">
                   <div className="flex justify-between text-xs text-slate-500">
-                    <span>Nº Recibo:</span>
+                    <span>Receipt No:</span>
                     <span className="font-mono text-slate-300">#{String(checkoutSuccess.id).padStart(6, '0')}</span>
                   </div>
                   <div className="flex justify-between text-xs text-slate-500">
-                    <span>Fecha:</span>
+                    <span>Date:</span>
                     <span className="text-slate-300">{new Date(checkoutSuccess.saleDate).toLocaleDateString()}</span>
                   </div>
                   <div className="flex justify-between text-sm font-semibold border-t border-slate-900 pt-2 text-slate-300">
-                    <span>Total Pagado:</span>
+                    <span>Total Paid:</span>
                     <span className="text-amber-500">${checkoutSuccess.total.toFixed(2)}</span>
                   </div>
                 </div>
@@ -748,13 +748,13 @@ function App() {
                     className="flex items-center justify-center gap-2 px-5 py-3 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-lg transition-all"
                   >
                     <Download className="w-4 h-4" />
-                    Descargar PDF
+                    Download PDF
                   </button>
                   <button 
                     onClick={() => setCheckoutSuccess(null)}
                     className="flex items-center justify-center gap-2 px-5 py-3 bg-slate-800 hover:bg-slate-750 text-slate-200 font-bold rounded-lg transition-all"
                   >
-                    Volver al Catálogo
+                    Back to Catalog
                   </button>
                 </div>
               </div>
@@ -767,7 +767,7 @@ function App() {
                     <Search className="w-5 h-5 absolute left-3 top-3.5 text-slate-650" />
                     <input 
                       type="text" 
-                      placeholder="Buscar cemento, varillas, ladrillos..."
+                      placeholder="Search cement, reinforcing bars, bricks..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       className="w-full pl-10 pr-4 py-3 bg-slate-900 border border-slate-850 rounded-xl focus:border-amber-500 focus:ring-1 focus:ring-amber-500 text-slate-200 placeholder-slate-600 focus:outline-none text-sm transition-all"
@@ -792,8 +792,8 @@ function App() {
                 {filteredProducts.length === 0 ? (
                   <div className="text-center py-20 bg-slate-900/30 border border-dashed border-slate-900 rounded-2xl">
                     <ShoppingBag className="w-12 h-12 text-slate-700 mx-auto mb-4" />
-                    <h3 className="text-lg font-bold text-slate-400">No se encontraron productos</h3>
-                    <p className="text-slate-600 text-sm mt-1">Prueba a cambiar los términos de búsqueda o el filtro.</p>
+                    <h3 className="text-lg font-bold text-slate-400">No products found</h3>
+                    <p className="text-slate-600 text-sm mt-1">Try changing the search terms or filter.</p>
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -804,21 +804,21 @@ function App() {
                             <span className="text-[10px] uppercase tracking-wider font-extrabold text-amber-500 px-2 py-0.5 bg-amber-500/10 rounded-full">{p.category}</span>
                             
                             {p.stock <= 0 ? (
-                              <span className="text-[10px] uppercase tracking-wider font-extrabold text-red-500 bg-red-950 px-2 py-0.5 rounded-full">Agotado</span>
+                              <span className="text-[10px] uppercase tracking-wider font-extrabold text-red-500 bg-red-950 px-2 py-0.5 rounded-full">Out of Stock</span>
                             ) : p.stock < 10 ? (
-                              <span className="text-[10px] uppercase tracking-wider font-extrabold text-orange-500 bg-orange-950 px-2 py-0.5 rounded-full">Stock Bajo ({p.stock})</span>
+                              <span className="text-[10px] uppercase tracking-wider font-extrabold text-orange-500 bg-orange-950 px-2 py-0.5 rounded-full">Low Stock ({p.stock})</span>
                             ) : (
                               <span className="text-xs text-slate-500 font-medium">Stock: {p.stock} {p.unit}</span>
                             )}
                           </div>
 
                           <h3 className="text-lg font-bold text-white group-hover:text-amber-400 transition-colors">{p.name}</h3>
-                          <p className="text-slate-400 text-xs mt-1 line-clamp-2 min-h-[2rem]">{p.description || 'Sin descripción disponible.'}</p>
+                          <p className="text-slate-400 text-xs mt-1 line-clamp-2 min-h-[2rem]">{p.description || 'No description available.'}</p>
                         </div>
 
                         <div className="flex items-center justify-between mt-5 pt-4 border-t border-slate-900">
                           <div>
-                            <span className="block text-[10px] text-slate-650 uppercase font-bold tracking-wider">Precio Unit.</span>
+                            <span className="block text-[10px] text-slate-650 uppercase font-bold tracking-wider">Unit Price</span>
                             <span className="text-xl font-black text-white">${p.price.toFixed(2)}</span>
                           </div>
 
@@ -827,7 +827,7 @@ function App() {
                             onClick={() => addToCart(p)}
                             className="px-4 py-2 rounded-lg bg-slate-800 hover:bg-amber-500 disabled:opacity-30 disabled:bg-slate-800/50 text-slate-100 group-hover:text-white hover:text-slate-950 font-bold text-xs transition-all flex items-center gap-1.5"
                           >
-                            <span>Agregar</span>
+                            <span>Add</span>
                             <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                           </button>
                         </div>
@@ -842,15 +842,15 @@ function App() {
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-xl font-bold text-slate-200 flex items-center gap-2">
                     <FileText className="w-5 h-5 text-amber-500" />
-                    Mis Compras Realizadas
+                    My Purchases History
                   </h2>
                 </div>
 
                 {salesHistory.length === 0 ? (
                   <div className="text-center py-20 bg-slate-900/30 border border-dashed border-slate-900 rounded-2xl">
                     <ShoppingBag className="w-12 h-12 text-slate-700 mx-auto mb-4" />
-                    <h3 className="text-lg font-bold text-slate-400">Aún no has realizado compras</h3>
-                    <p className="text-slate-600 text-sm mt-1">Explora nuestro catálogo y adquiere tus materiales sin intermediarios.</p>
+                    <h3 className="text-lg font-bold text-slate-400">You haven't made any purchases yet</h3>
+                    <p className="text-slate-600 text-sm mt-1">Explore our catalog and purchase your materials directly.</p>
                   </div>
                 ) : (
                   <div className="space-y-4">
@@ -858,18 +858,18 @@ function App() {
                       <div key={sale.id} className="bg-slate-900 border border-slate-850 rounded-xl p-5 flex flex-col sm:flex-row justify-between sm:items-center gap-4 hover:border-slate-800 transition-all">
                         <div>
                           <div className="flex items-center gap-3">
-                            <span className="font-mono text-slate-200 font-bold">Nº #{String(sale.id).padStart(6, '0')}</span>
-                            <span className="px-2 py-0.5 bg-emerald-500/10 text-emerald-400 font-bold text-[10px] rounded-full uppercase">Completado</span>
+                            <span className="font-mono text-slate-200 font-bold">No. #{String(sale.id).padStart(6, '0')}</span>
+                            <span className="px-2 py-0.5 bg-emerald-500/10 text-emerald-400 font-bold text-[10px] rounded-full uppercase">Completed</span>
                           </div>
                           
                           <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-500 mt-2">
-                            <span>Fecha: {new Date(sale.saleDate).toLocaleString()}</span>
-                            <span>Artículos: {sale.details.reduce((sum, d) => sum + d.quantity, 0)}</span>
+                            <span>Date: {new Date(sale.saleDate).toLocaleString()}</span>
+                            <span>Items: {sale.details.reduce((sum, d) => sum + d.quantity, 0)}</span>
                           </div>
 
                           {/* Previsualizar productos comprados */}
                           <div className="mt-2 text-xs text-slate-450 italic">
-                            {sale.details.map(d => `${d.productName || 'Producto'} (x${d.quantity})`).join(', ')}
+                            {sale.details.map(d => `${d.productName || 'Product'} (x${d.quantity})`).join(', ')}
                           </div>
                         </div>
 
@@ -882,7 +882,7 @@ function App() {
                           <button 
                             onClick={() => downloadReceipt(sale.id)}
                             className="p-2.5 bg-slate-950 border border-slate-800 rounded-lg text-slate-400 hover:text-amber-500 hover:border-amber-500/30 transition-all"
-                            title="Descargar Comprobante PDF"
+                            title="Download PDF Receipt"
                           >
                             <Download className="w-4.5 h-4.5" />
                           </button>
@@ -911,7 +911,7 @@ function App() {
                 <div className="p-6 border-b border-slate-850 flex items-center justify-between">
                   <h3 className="text-lg font-bold text-white flex items-center gap-2">
                     <ShoppingCart className="w-5 h-5 text-amber-500" />
-                    Mi Carrito
+                    My Cart
                   </h3>
                   <button onClick={() => setIsCartOpen(false)} className="text-slate-400 hover:text-slate-100 font-bold text-2xl leading-none">&times;</button>
                 </div>
@@ -921,15 +921,15 @@ function App() {
                   {cart.length === 0 ? (
                     <div className="text-center py-20 text-slate-600 space-y-3">
                       <ShoppingCart className="w-12 h-12 text-slate-700 mx-auto" />
-                      <p className="text-sm font-medium">El carrito está vacío.</p>
-                      <button onClick={() => setIsCartOpen(false)} className="text-xs text-amber-500 hover:underline">Volver a Catálogo</button>
+                      <p className="text-sm font-medium">Your cart is empty.</p>
+                      <button onClick={() => setIsCartOpen(false)} className="text-xs text-amber-500 hover:underline">Back to Catalog</button>
                     </div>
                   ) : (
                     cart.map(item => (
                       <div key={item.id} className="flex gap-4 p-3 bg-slate-950 border border-slate-900 rounded-xl">
                         <div className="flex-1 min-w-0">
                           <h4 className="text-sm font-semibold text-white truncate">{item.name}</h4>
-                          <span className="text-xs text-slate-500">${item.price.toFixed(2)} por {item.unit}</span>
+                          <span className="text-xs text-slate-500">${item.price.toFixed(2)} per {item.unit}</span>
                           
                           <div className="flex items-center gap-2 mt-2">
                             <button 
@@ -967,11 +967,11 @@ function App() {
                         <span className="text-slate-200 font-semibold">${cartSubtotal.toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span>IVA (19%):</span>
+                        <span>VAT (19%):</span>
                         <span className="text-slate-200 font-semibold">${cartTax.toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between text-sm border-t border-slate-900 pt-2 text-slate-200 font-extrabold">
-                        <span>Total Compra:</span>
+                        <span>Total Purchase:</span>
                         <span className="text-amber-500">${cartTotal.toFixed(2)}</span>
                       </div>
                     </div>
@@ -981,7 +981,7 @@ function App() {
                       disabled={isLoading}
                       className="w-full py-3 bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-slate-950 font-bold rounded-lg transition-all text-sm"
                     >
-                      {isLoading ? 'Procesando Compra...' : 'Confirmar y Pagar'}
+                      {isLoading ? 'Processing Purchase...' : 'Confirm and Pay'}
                     </button>
                   </div>
                 )}
@@ -991,7 +991,7 @@ function App() {
 
           {/* Footer */}
           <footer className="border-t border-slate-900/60 bg-slate-950 py-6 text-center text-slate-500 text-xs mt-auto">
-            <p>Firmeza © — Panel de Compras Clientes y Autogestión</p>
+            <p>Firmeza © — Customer Shopping & Self-Service Portal</p>
           </footer>
         </div>
       )}
