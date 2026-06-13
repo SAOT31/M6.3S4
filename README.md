@@ -144,13 +144,14 @@ Contraseña: Admin123!
 
 ---
 
-## Instalación y ejecución local
+## Instalación y ejecución local con Docker (Recomendado)
+
+Este enfoque garantiza la calidad y reproducibilidad completa del entorno mediante un único comando, ejecutando pruebas automatizadas antes de iniciar cualquier servicio del sistema.
 
 ### Requisitos previos
-- Docker (Requerido para la orquestación del backend y base de datos)
-- Node.js (Requerido para la compilación y ejecución del frontend)
+- **Docker** y **Docker Compose** instalados en el sistema.
 
-### Instrucciones de Despliegue
+### Instrucciones de Despliegue Orquestado
 
 Este enfoque garantiza la reproducibilidad del entorno sin requerir la instalación local del SDK de .NET ni la configuración manual del motor de base de datos.
 
