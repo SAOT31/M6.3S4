@@ -67,9 +67,9 @@ Firmeza/
 ```
 
 ### ¿Por qué esta separación?
-- **Core** no depende de nada externo — puro C#. Si cambias la BD o el framework, Core no cambia.
-- **Infrastructure** se encarga de todo lo que toca el exterior (BD, archivos, APIs externas).
-- **Web** solo muestra datos y recibe órdenes del usuario.
+- **Core**: No depende de nada externo — puro C#. Si cambias la base de datos o el framework, Core no cambia.
+- **Infrastructure**: Se encarga del acceso a datos, persistencia en la base de datos y envío de correos.
+- **Web**: Panel administrativo interno desarrollado con Razor Pages.
 
 ---
 
