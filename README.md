@@ -166,31 +166,43 @@ docker compose up --build
    * *Si todas las pruebas pasan*: Da luz verde a los demás servicios (`service_completed_successfully`).
 3. **api, admin, client**: Se inicializan en paralelo.
 
-1. Inicializar el ecosistema del backend (Base de datos, API RESTful y Panel Web):
-   ```bash
-   docker-compose up --build -d
-   ```
-   > **Nota:** La aplicación de migraciones y el *seeding* de datos se ejecutan automáticamente durante el inicio.
-   > - Panel de administración disponible en: `http://localhost:8080`
-   > - API RESTful disponible en: `http://localhost:5000`
-
-2. Compilar e inicializar el módulo frontend:
-   ```bash
-   cd src/Firmeza.Client
-   npm install
-   npm run dev
-   ```
-   > - Portal de clientes disponible en: `http://localhost:5173`
+#### URLs de Acceso a los Servicios:
+* **Cliente SPA (React):** 
+http://localhost:5173
+* **Panel de Administración (Razor Pages):** 
+http://localhost:8080
 
 ---
 
-## Ejecutar las pruebas
+## Ejecución Manual (Entorno de Desarrollo Local)
 
+Si deseas depurar los proyectos localmente sin contenedores completos para la lógica de negocio, sigue estos pasos:
+
+### 1. Inicializar la Base de Datos con Docker
 ```bash
-dotnet test tests/Firmeza.Tests
+docker compose up db -d
 ```
 
-Resultado esperado: **24 pruebas pasando, 0 fallando**.
+### 2. Ejecutar Pruebas Locales
+```bash
+dotnet test
+```
+
+### 3. Ejecutar los Proyectos
+* **API Backend:**
+  ```bash
+  dotnet run --project src/Firmeza.Api
+  ```
+* **Panel de Administración Razor:**
+  ```bash
+  dotnet run --project src/Firmeza.Web
+  ```
+* **Cliente SPA (React):**
+  ```bash
+  cd src/Firmeza.Client
+  npm install
+  npm run dev
+  ```
 
 ---
 
