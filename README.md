@@ -258,7 +258,7 @@ dotnet test
 
 ## API RESTful (Firmeza.Api)
 
-La API RESTful expone endpoints para la gestión del negocio y la integración con aplicaciones clientes (como portales Blazor).
+La API RESTful expone endpoints para la gestión del negocio y la integración con aplicaciones clientes (como la SPA de React).
 
 ### Características
 - **Swagger UI**: Disponible en `http://localhost:5001/swagger` para pruebas interactivas de endpoints.
