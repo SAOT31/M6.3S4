@@ -942,6 +942,20 @@ function App() {
                   ) : (
                     cart.map(item => (
                       <div key={item.id} className="flex gap-4 p-3 bg-slate-50 border border-slate-200 rounded-xl">
+                        {/* Miniatura del producto */}
+                        <div className="w-16 h-16 bg-white border border-slate-200 rounded-lg overflow-hidden flex items-center justify-center flex-shrink-0">
+                          {item.imageUrl ? (
+                            <img
+                              src={item.imageUrl}
+                              alt={item.name}
+                              className="w-full h-full object-contain p-1"
+                              onError={(e) => { e.target.style.display='none'; e.target.parentNode.innerHTML='<span class="text-slate-300 text-xl">🏗️</span>'; }}
+                            />
+                          ) : (
+                            <span className="text-slate-300 text-2xl">🏗️</span>
+                          )}
+                        </div>
+
                         <div className="flex-1 min-w-0">
                           <h4 className="text-sm font-semibold text-slate-900 truncate">{item.name}</h4>
                           <span className="text-xs text-slate-500">${item.price.toFixed(2)} per {item.unit}</span>
