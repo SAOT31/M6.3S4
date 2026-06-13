@@ -173,16 +173,16 @@ static async Task SeedDatabase(WebApplication app)
         {
             var defaultProducts = new List<Product>
             {
-                new Product { Name = "Cemento Gris Especial 50kg", Description = "Cemento gris de alta resistencia para todo tipo de obras y mezclas de concreto.", Category = "Materiales", Unit = "Bolsa", Price = 28500m, Stock = 150 },
-                new Product { Name = "Varilla Corrugada 1/2 pulgada", Description = "Varilla de acero de 1/2 pulgada de diámetro, longitud de 6 metros para refuerzo estructural.", Category = "Materiales", Unit = "Unidad", Price = 32000m, Stock = 200 },
-                new Product { Name = "Ladrillo Limpio Arcilla", Description = "Ladrillo de arcilla cocida para muros estructurales y divisiones.", Category = "Materiales", Unit = "Unidad", Price = 1200m, Stock = 1000 },
-                new Product { Name = "Arena de Río Lavada", Description = "Arena fina lavada ideal para pañete, mortero y acabados.", Category = "Materiales", Unit = "M3", Price = 65000m, Stock = 80 },
-                new Product { Name = "Pintura Acrílica Exterior Blanco Galón", Description = "Pintura vinilo acrílica tipo 1 de alta durabilidad y resistencia a la intemperie.", Category = "Materiales", Unit = "Galón", Price = 48000m, Stock = 45 },
+                new Product { Name = "Special Gray Cement 50kg", Description = "High-strength gray cement for all types of construction work and concrete mixes.", Category = "Materials", Unit = "Bag", Price = 28500m, Stock = 150 },
+                new Product { Name = "Corrugated Steel Bar 1/2 inch", Description = "1/2 inch diameter steel rebar, 6 meters long, for structural reinforcement.", Category = "Materials", Unit = "Unit", Price = 32000m, Stock = 200 },
+                new Product { Name = "Clean Clay Brick", Description = "Fired clay brick for structural walls and partitions.", Category = "Materials", Unit = "Unit", Price = 1200m, Stock = 1000 },
+                new Product { Name = "Washed River Sand", Description = "Fine washed river sand, ideal for plastering, mortar and finishing.", Category = "Materials", Unit = "M3", Price = 65000m, Stock = 80 },
+                new Product { Name = "Exterior Acrylic Paint White Gallon", Description = "Type 1 acrylic vinyl paint, high durability and weather resistance.", Category = "Materials", Unit = "Gallon", Price = 48000m, Stock = 45 },
                 
-                new Product { Name = "Camión Volqueta Dobletroque", Description = "Alquiler de camión volqueta dobletroque de 15m³ de capacidad con operario calificado.", Category = "Vehículos", Unit = "Día", Price = 450000m, Stock = 5 },
-                new Product { Name = "Mezcladora de Concreto 1 Bulto", Description = "Alquiler de trompo mezclador de concreto con motor a gasolina de 9HP.", Category = "Vehículos", Unit = "Día", Price = 85000m, Stock = 12 },
-                new Product { Name = "Miniexcavadora Orugas", Description = "Alquiler de miniexcavadora con balde de 0.1m³ y orugas de goma, ideal para excavaciones en espacios reducidos.", Category = "Vehículos", Unit = "Día", Price = 600000m, Stock = 3 },
-                new Product { Name = "Camión Mixer Hormigonera", Description = "Alquiler de camión mezclador de concreto de 8m³ con conductor y operario de bomba.", Category = "Vehículos", Unit = "Día", Price = 950000m, Stock = 2 }
+                new Product { Name = "Double-axle Dump Truck", Description = "Rental of 15m³ double-axle dump truck with qualified operator.", Category = "Vehicles", Unit = "Day", Price = 450000m, Stock = 5 },
+                new Product { Name = "Concrete Mixer 1-Bag", Description = "Rental of concrete drum mixer with 9HP gasoline engine.", Category = "Vehicles", Unit = "Day", Price = 85000m, Stock = 12 },
+                new Product { Name = "Mini Crawler Excavator", Description = "Rental of mini excavator with 0.1m³ bucket and rubber tracks, ideal for excavation in tight spaces.", Category = "Vehicles", Unit = "Day", Price = 600000m, Stock = 3 },
+                new Product { Name = "Concrete Mixer Truck", Description = "Rental of 8m³ concrete mixer truck with driver and pump operator.", Category = "Vehicles", Unit = "Day", Price = 950000m, Stock = 2 }
             };
             await context.Products.AddRangeAsync(defaultProducts);
             await context.SaveChangesAsync();

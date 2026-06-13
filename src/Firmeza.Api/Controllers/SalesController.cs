@@ -152,23 +152,23 @@ public class SalesController : ControllerBase
                     $"<li>{(d.Product != null ? d.Product.Name : "Producto")} x{d.Quantity} - Subtotal: ${d.Subtotal}</li>"));
 
                 var emailBody = $@"
-                    <h1>Confirmación de Compra - Firmeza</h1>
-                    <p>Hola {client.FullName},</p>
-                    <p>Gracias por tu compra. Adjunto a este correo encontrarás el comprobante oficial en formato PDF.</p>
-                    <p>Detalle de tu factura:</p>
+                    <h1>Purchase Confirmation - Firmeza</h1>
+                    <p>Hello {client.FullName},</p>
+                    <p>Thank you for your purchase. Please find the official receipt attached to this email in PDF format.</p>
+                    <p>Order summary:</p>
                     <ul>
                         {detailLines}
                     </ul>
-                    <h3>Total Pagado: ${fullSale.Total}</h3>
-                    <p>Fecha: {fullSale.SaleDate:dd/MM/yyyy HH:mm}</p>
+                    <h3>Total Paid: ${fullSale.Total}</h3>
+                    <p>Date: {fullSale.SaleDate:MM/dd/yyyy HH:mm}</p>
                 ";
 
                 await _emailService.SendEmailWithAttachmentAsync(
                     client.Email,
-                    $"Confirmación de Compra #{fullSale.Id} - Firmeza",
+                    $"Purchase Confirmation #{fullSale.Id} - Firmeza",
                     emailBody,
                     pdfBytes,
-                    $"comprobante-{fullSale.Id:D6}.pdf"
+                    $"receipt-{fullSale.Id:D6}.pdf"
                 );
             }
         }

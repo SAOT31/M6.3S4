@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { ShoppingCart, LogOut, User, Search, ShoppingBag, CheckCircle, Download, FileText, Trash2, ArrowRight } from 'lucide-react'
 import './App.css'
 
-const API_BASE_URL = 'http://localhost:5000/api'
+const API_BASE_URL = 'http://localhost:5001/api'
 
 function App() {
   // Estado de Autenticación
@@ -434,7 +434,7 @@ function App() {
   })
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-amber-500 selection:text-slate-950">
+    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans selection:bg-orange-500 selection:text-white">
       
       {/* Notificaciones flotantes */}
       {errorMsg && (
@@ -452,13 +452,13 @@ function App() {
 
       {/* Pantalla No Autenticado */}
       {!token ? (
-        <div className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-black">
+        <div className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden bg-gradient-to-br from-slate-100 via-slate-50 to-white">
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#0f172a_1px,transparent_1px),linear-gradient(to_bottom,#0f172a_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-30"></div>
           
-          <div className="w-full max-w-md bg-slate-900/60 backdrop-blur-xl border border-slate-800 p-8 rounded-2xl shadow-2xl relative z-10">
+          <div className="w-full max-w-md bg-white/90 backdrop-blur-xl border border-slate-200 shadow-xl p-8 rounded-2xl shadow-2xl relative z-10">
             <div className="text-center mb-8">
-              <h1 className="text-4xl font-extrabold tracking-tight text-amber-500 m-0">FIRMEZA</h1>
-              <p className="text-slate-400 text-sm mt-1">Customer Portal</p>
+              <h1 className="text-4xl font-extrabold tracking-tight text-blue-900 m-0">FIRMEZA</h1>
+              <p className="text-slate-500 text-sm mt-1">Customer Portal</p>
             </div>
 
             {authMode === 'login' ? (
@@ -471,7 +471,7 @@ function App() {
                     value={loginEmail}
                     onChange={(e) => setLoginEmail(e.target.value)}
                     placeholder="user@email.com"
-                    className="w-full px-4 py-3 rounded-lg bg-slate-950 border border-slate-850 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 text-slate-100 placeholder-slate-600 focus:outline-none transition-all"
+                    className="w-full px-4 py-3 rounded-lg bg-slate-50 border border-slate-200 focus:border-blue-700 focus:ring-1 focus:ring-blue-700 text-slate-800 placeholder-slate-400 focus:outline-none transition-all"
                   />
                 </div>
                 <div>
@@ -482,19 +482,19 @@ function App() {
                     value={loginPassword}
                     onChange={(e) => setLoginPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="w-full px-4 py-3 rounded-lg bg-slate-950 border border-slate-850 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 text-slate-100 placeholder-slate-600 focus:outline-none transition-all"
+                    className="w-full px-4 py-3 rounded-lg bg-slate-50 border border-slate-200 focus:border-blue-700 focus:ring-1 focus:ring-blue-700 text-slate-800 placeholder-slate-400 focus:outline-none transition-all"
                   />
                 </div>
                 <button 
                   type="submit" 
                   disabled={isLoading}
-                  className="w-full py-3 bg-amber-500 hover:bg-amber-600 active:scale-[0.98] disabled:opacity-50 text-slate-950 font-bold rounded-lg transition-all shadow-lg shadow-amber-500/10"
+                  className="w-full py-3 bg-orange-500 hover:bg-orange-600 active:scale-[0.98] disabled:opacity-50 text-white font-bold rounded-lg transition-all shadow-lg shadow-orange-500/10"
                 >
                   {isLoading ? 'Logging in...' : 'Log In'}
                 </button>
                 <p className="text-center text-xs text-slate-500 mt-4">
                   Don't have an account?{' '}
-                  <button type="button" onClick={() => setAuthMode('register')} className="text-amber-500 hover:underline">Register</button>
+                  <button type="button" onClick={() => setAuthMode('register')} className="text-blue-700 hover:underline">Register</button>
                 </p>
               </form>
             ) : (
@@ -507,7 +507,7 @@ function App() {
                     value={regName}
                     onChange={(e) => setRegName(e.target.value)}
                     placeholder="John Doe"
-                    className="w-full px-4 py-3 rounded-lg bg-slate-950 border border-slate-850 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 text-slate-100 placeholder-slate-600 focus:outline-none transition-all"
+                    className="w-full px-4 py-3 rounded-lg bg-slate-50 border border-slate-200 focus:border-blue-700 focus:ring-1 focus:ring-blue-700 text-slate-800 placeholder-slate-400 focus:outline-none transition-all"
                   />
                 </div>
                 <div>
@@ -518,7 +518,7 @@ function App() {
                     value={regEmail}
                     onChange={(e) => setRegEmail(e.target.value)}
                     placeholder="user@email.com"
-                    className="w-full px-4 py-3 rounded-lg bg-slate-950 border border-slate-850 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 text-slate-100 placeholder-slate-600 focus:outline-none transition-all"
+                    className="w-full px-4 py-3 rounded-lg bg-slate-50 border border-slate-200 focus:border-blue-700 focus:ring-1 focus:ring-blue-700 text-slate-800 placeholder-slate-400 focus:outline-none transition-all"
                   />
                 </div>
                 <div>
@@ -529,19 +529,19 @@ function App() {
                     value={regPassword}
                     onChange={(e) => setRegPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="w-full px-4 py-3 rounded-lg bg-slate-950 border border-slate-850 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 text-slate-100 placeholder-slate-600 focus:outline-none transition-all"
+                    className="w-full px-4 py-3 rounded-lg bg-slate-50 border border-slate-200 focus:border-blue-700 focus:ring-1 focus:ring-blue-700 text-slate-800 placeholder-slate-400 focus:outline-none transition-all"
                   />
                 </div>
                 <button 
                   type="submit" 
                   disabled={isLoading}
-                  className="w-full py-3 bg-amber-500 hover:bg-amber-600 active:scale-[0.98] disabled:opacity-50 text-slate-950 font-bold rounded-lg transition-all shadow-lg shadow-amber-500/10"
+                  className="w-full py-3 bg-orange-500 hover:bg-orange-600 active:scale-[0.98] disabled:opacity-50 text-white font-bold rounded-lg transition-all shadow-lg shadow-orange-500/10"
                 >
                   {isLoading ? 'Registering...' : 'Register'}
                 </button>
                 <p className="text-center text-xs text-slate-500 mt-4">
                   Already have an account?{' '}
-                  <button type="button" onClick={() => setAuthMode('login')} className="text-amber-500 hover:underline">Log In</button>
+                  <button type="button" onClick={() => setAuthMode('login')} className="text-blue-700 hover:underline">Log In</button>
                 </p>
               </form>
             )}
@@ -549,11 +549,11 @@ function App() {
         </div>
       ) : needsProfileSetup ? (
         /* Pantalla Completar Perfil de Cliente */
-        <div className="min-h-screen flex items-center justify-center px-4 bg-slate-950 text-slate-100 py-10">
-          <div className="w-full max-w-xl bg-slate-900 border border-slate-800 p-8 rounded-2xl shadow-2xl">
+        <div className="min-h-screen flex items-center justify-center px-4 bg-slate-50 text-slate-800 py-10">
+          <div className="w-full max-w-xl bg-white border border-slate-200 p-8 rounded-2xl shadow-xl">
             <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold text-amber-500">Complete Your Profile</h2>
-              <p className="text-slate-400 text-sm mt-1">To make purchases and receive your receipts, we need to associate your customer details.</p>
+              <h2 className="text-2xl font-bold text-blue-900">Complete Your Profile</h2>
+              <p className="text-slate-500 text-sm mt-1">To make purchases and receive your receipts, we need to associate your customer details.</p>
             </div>
             
             <form onSubmit={handleCreateProfile} className="space-y-4">
@@ -566,7 +566,7 @@ function App() {
                     value={profileForm.firstName}
                     onChange={(e) => setProfileForm({...profileForm, firstName: e.target.value})}
                     placeholder="John"
-                    className="w-full px-4 py-2.5 rounded-lg bg-slate-950 border border-slate-800 focus:border-amber-500 focus:outline-none text-sm"
+                    className="w-full px-4 py-2.5 rounded-lg bg-slate-50 border border-slate-200 focus:border-blue-700 focus:outline-none text-sm"
                   />
                 </div>
                 <div>
@@ -577,7 +577,7 @@ function App() {
                     value={profileForm.lastName}
                     onChange={(e) => setProfileForm({...profileForm, lastName: e.target.value})}
                     placeholder="Doe"
-                    className="w-full px-4 py-2.5 rounded-lg bg-slate-950 border border-slate-800 focus:border-amber-500 focus:outline-none text-sm"
+                    className="w-full px-4 py-2.5 rounded-lg bg-slate-50 border border-slate-200 focus:border-blue-700 focus:outline-none text-sm"
                   />
                 </div>
               </div>
@@ -588,7 +588,7 @@ function App() {
                   <select 
                     value={profileForm.documentType}
                     onChange={(e) => setProfileForm({...profileForm, documentType: e.target.value})}
-                    className="w-full px-4 py-2.5 rounded-lg bg-slate-950 border border-slate-800 focus:border-amber-500 focus:outline-none text-sm text-slate-300"
+                    className="w-full px-4 py-2.5 rounded-lg bg-slate-50 border border-slate-200 focus:border-blue-700 focus:outline-none text-sm text-slate-300"
                   >
                     <option value="CC">ID Card (CC)</option>
                     <option value="NIT">Tax ID (NIT)</option>
@@ -603,7 +603,7 @@ function App() {
                     value={profileForm.documentNumber}
                     onChange={(e) => setProfileForm({...profileForm, documentNumber: e.target.value})}
                     placeholder="12345678"
-                    className="w-full px-4 py-2.5 rounded-lg bg-slate-950 border border-slate-800 focus:border-amber-500 focus:outline-none text-sm"
+                    className="w-full px-4 py-2.5 rounded-lg bg-slate-50 border border-slate-200 focus:border-blue-700 focus:outline-none text-sm"
                   />
                 </div>
               </div>
@@ -617,7 +617,7 @@ function App() {
                     value={profileForm.phone}
                     onChange={(e) => setProfileForm({...profileForm, phone: e.target.value})}
                     placeholder="3001234567"
-                    className="w-full px-4 py-2.5 rounded-lg bg-slate-950 border border-slate-800 focus:border-amber-500 focus:outline-none text-sm"
+                    className="w-full px-4 py-2.5 rounded-lg bg-slate-50 border border-slate-200 focus:border-blue-700 focus:outline-none text-sm"
                   />
                 </div>
                 <div>
@@ -630,7 +630,7 @@ function App() {
                     placeholder="30"
                     min="18"
                     max="120"
-                    className="w-full px-4 py-2.5 rounded-lg bg-slate-950 border border-slate-800 focus:border-amber-500 focus:outline-none text-sm"
+                    className="w-full px-4 py-2.5 rounded-lg bg-slate-50 border border-slate-200 focus:border-blue-700 focus:outline-none text-sm"
                   />
                 </div>
               </div>
@@ -643,7 +643,7 @@ function App() {
                   value={profileForm.address}
                   onChange={(e) => setProfileForm({...profileForm, address: e.target.value})}
                   placeholder="Street 123 #45-67"
-                  className="w-full px-4 py-2.5 rounded-lg bg-slate-950 border border-slate-800 focus:border-amber-500 focus:outline-none text-sm"
+                  className="w-full px-4 py-2.5 rounded-lg bg-slate-50 border border-slate-200 focus:border-blue-700 focus:outline-none text-sm"
                 />
               </div>
 
@@ -651,7 +651,7 @@ function App() {
                 <button 
                   type="submit" 
                   disabled={isLoading}
-                  className="w-full py-3 bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-slate-950 font-bold rounded-lg transition-all text-sm"
+                  className="w-full py-3 bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-white font-bold rounded-lg transition-all text-sm"
                 >
                   {isLoading ? 'Registering...' : 'Complete Registration'}
                 </button>
@@ -663,20 +663,20 @@ function App() {
         /* Pantalla Principal Logueado */
         <div className="flex flex-col min-h-screen">
           {/* Header / Navbar */}
-          <header className="sticky top-0 z-40 bg-slate-950/80 backdrop-blur-md border-b border-slate-900 px-6 py-4">
+          <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm px-6 py-4">
             <div className="max-w-7xl mx-auto flex items-center justify-between">
               <div className="flex items-center gap-6">
-                <h1 className="text-2xl font-black text-amber-500 tracking-wider m-0">FIRMEZA</h1>
+                <h1 className="text-2xl font-black text-blue-900 tracking-wider m-0">FIRMEZA</h1>
                 <nav className="flex items-center gap-4">
                   <button 
                     onClick={() => { setActiveTab('catalog'); setCheckoutSuccess(null); }}
-                    className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-all ${activeTab === 'catalog' ? 'bg-slate-900 text-amber-500 border border-slate-800' : 'text-slate-400 hover:text-slate-200'}`}
+                    className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-all ${activeTab === 'catalog' ? 'bg-blue-900 text-white border border-blue-800' : 'text-slate-400 hover:text-slate-200'}`}
                   >
                     Catalog
                   </button>
                   <button 
                     onClick={() => { setActiveTab('history'); setCheckoutSuccess(null); }}
-                    className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-all ${activeTab === 'history' ? 'bg-slate-900 text-amber-500 border border-slate-800' : 'text-slate-400 hover:text-slate-200'}`}
+                    className={`px-3 py-1.5 rounded-lg text-sm font-semibold transition-all ${activeTab === 'history' ? 'bg-blue-900 text-white border border-blue-800' : 'text-slate-400 hover:text-slate-200'}`}
                   >
                     My Purchases
                   </button>
@@ -684,18 +684,18 @@ function App() {
               </div>
 
               <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2 text-slate-400 text-sm bg-slate-900 border border-slate-850 px-3 py-1.5 rounded-lg">
-                  <User className="w-4 h-4 text-amber-500" />
+                <div className="flex items-center gap-2 text-slate-600 text-sm bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-lg">
+                  <User className="w-4 h-4 text-blue-900" />
                   <span>{user.displayName}</span>
                 </div>
                 
                 <button 
                   onClick={() => setIsCartOpen(true)}
-                  className="relative p-2 bg-slate-900 hover:bg-slate-850 border border-slate-800 rounded-lg text-slate-200 hover:text-amber-500 transition-all"
+                  className="relative p-2 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-lg text-slate-700 hover:text-blue-900 transition-all"
                 >
                   <ShoppingCart className="w-5 h-5" />
                   {cart.length > 0 && (
-                    <span className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-amber-500 text-slate-950 font-bold text-xs rounded-full flex items-center justify-center">
+                    <span className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-orange-500 text-white font-bold text-xs rounded-full flex items-center justify-center">
                       {cart.reduce((sum, item) => sum + item.quantity, 0)}
                     </span>
                   )}
@@ -703,7 +703,7 @@ function App() {
 
                 <button 
                   onClick={handleLogout}
-                  className="p-2 bg-slate-900/50 hover:bg-red-950 border border-slate-900 hover:border-red-900 rounded-lg text-slate-400 hover:text-red-200 transition-all"
+                  className="p-2 bg-slate-100 hover:bg-red-100 border border-slate-200 hover:border-red-300 rounded-lg text-slate-400 hover:text-red-600 transition-all"
                   title="Log Out"
                 >
                   <LogOut className="w-5 h-5" />
@@ -717,26 +717,26 @@ function App() {
             
             {checkoutSuccess ? (
               /* Vista Exito Venta */
-              <div className="max-w-xl mx-auto bg-slate-900 border border-slate-800 rounded-2xl p-8 text-center shadow-2xl my-10">
+              <div className="max-w-xl mx-auto bg-white border border-slate-200 rounded-2xl p-8 text-center shadow-xl my-10">
                 <div className="w-16 h-16 bg-emerald-950 border border-emerald-500 text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-6">
                   <CheckCircle className="w-10 h-10" />
                 </div>
-                <h2 className="text-3xl font-extrabold text-white mb-2">Purchase Completed!</h2>
+                <h2 className="text-3xl font-extrabold text-slate-900 mb-2">Purchase Completed!</h2>
                 <p className="text-slate-400 text-sm mb-6">
                   The transaction has been processed securely. The official PDF receipt has been sent to your email{' '}
-                  <span className="text-amber-500 font-semibold">{clientProfile?.email}</span>.
+                  <span className="text-orange-500 font-semibold">{clientProfile?.email}</span>.
                 </p>
 
-                <div className="bg-slate-950 border border-slate-900 rounded-xl p-4 mb-8 text-left space-y-2">
+                <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 mb-8 text-left space-y-2">
                   <div className="flex justify-between text-xs text-slate-500">
                     <span>Receipt No:</span>
-                    <span className="font-mono text-slate-300">#{String(checkoutSuccess.id).padStart(6, '0')}</span>
+                    <span className="font-mono text-slate-700">#{String(checkoutSuccess.id).padStart(6, '0')}</span>
                   </div>
                   <div className="flex justify-between text-xs text-slate-500">
                     <span>Date:</span>
                     <span className="text-slate-300">{new Date(checkoutSuccess.saleDate).toLocaleDateString()}</span>
                   </div>
-                  <div className="flex justify-between text-sm font-semibold border-t border-slate-900 pt-2 text-slate-300">
+                  <div className="flex justify-between text-sm font-semibold border-t border-slate-200 pt-2 text-slate-800">
                     <span>Total Paid:</span>
                     <span className="text-amber-500">${checkoutSuccess.total.toFixed(2)}</span>
                   </div>
@@ -745,14 +745,14 @@ function App() {
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                   <button 
                     onClick={() => downloadReceipt(checkoutSuccess.id)}
-                    className="flex items-center justify-center gap-2 px-5 py-3 bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold rounded-lg transition-all"
+                    className="flex items-center justify-center gap-2 px-5 py-3 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-lg transition-all"
                   >
                     <Download className="w-4 h-4" />
                     Download PDF
                   </button>
                   <button 
                     onClick={() => setCheckoutSuccess(null)}
-                    className="flex items-center justify-center gap-2 px-5 py-3 bg-slate-800 hover:bg-slate-750 text-slate-200 font-bold rounded-lg transition-all"
+                    className="flex items-center justify-center gap-2 px-5 py-3 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold rounded-lg transition-all"
                   >
                     Back to Catalog
                   </button>
@@ -770,7 +770,7 @@ function App() {
                       placeholder="Search cement, reinforcing bars, bricks..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full pl-10 pr-4 py-3 bg-slate-900 border border-slate-850 rounded-xl focus:border-amber-500 focus:ring-1 focus:ring-amber-500 text-slate-200 placeholder-slate-600 focus:outline-none text-sm transition-all"
+                      className="w-full pl-10 pr-4 py-3 bg-white border border-slate-200 rounded-xl focus:border-blue-700 focus:ring-1 focus:ring-blue-700 text-slate-800 placeholder-slate-400 focus:outline-none text-sm transition-all"
                     />
                   </div>
 
@@ -780,7 +780,7 @@ function App() {
                       <button
                         key={cat}
                         onClick={() => setSelectedCategory(cat)}
-                        className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all border ${selectedCategory === cat ? 'bg-amber-500 border-amber-500 text-slate-950 shadow-lg shadow-amber-500/10' : 'bg-slate-900 border-slate-850 text-slate-400 hover:text-slate-200'}`}
+                        className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all border ${selectedCategory === cat ? 'bg-blue-900 border-blue-900 text-white shadow-lg shadow-blue-900/10' : 'bg-white border-slate-200 text-slate-500 hover:text-slate-800'}`}
                       >
                         {cat}
                       </button>
@@ -790,18 +790,18 @@ function App() {
 
                 {/* Grid de Productos */}
                 {filteredProducts.length === 0 ? (
-                  <div className="text-center py-20 bg-slate-900/30 border border-dashed border-slate-900 rounded-2xl">
-                    <ShoppingBag className="w-12 h-12 text-slate-700 mx-auto mb-4" />
+                  <div className="text-center py-20 bg-slate-50 border border-dashed border-slate-300 rounded-2xl">
+                    <ShoppingBag className="w-12 h-12 text-slate-300 mx-auto mb-4" />
                     <h3 className="text-lg font-bold text-slate-400">No products found</h3>
                     <p className="text-slate-600 text-sm mt-1">Try changing the search terms or filter.</p>
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredProducts.map(p => (
-                      <div key={p.id} className="bg-slate-900 border border-slate-850 rounded-xl p-5 flex flex-col justify-between hover:border-slate-700 hover:shadow-xl transition-all group">
+                      <div key={p.id} className="bg-white border border-slate-200 rounded-xl p-5 flex flex-col justify-between hover:border-blue-200 hover:shadow-lg transition-all group">
                         <div>
                           <div className="flex justify-between items-start gap-2 mb-2">
-                            <span className="text-[10px] uppercase tracking-wider font-extrabold text-amber-500 px-2 py-0.5 bg-amber-500/10 rounded-full">{p.category}</span>
+                            <span className="text-[10px] uppercase tracking-wider font-extrabold text-blue-900 px-2 py-0.5 bg-blue-900/10 rounded-full">{p.category}</span>
                             
                             {p.stock <= 0 ? (
                               <span className="text-[10px] uppercase tracking-wider font-extrabold text-red-500 bg-red-950 px-2 py-0.5 rounded-full">Out of Stock</span>
@@ -812,20 +812,20 @@ function App() {
                             )}
                           </div>
 
-                          <h3 className="text-lg font-bold text-white group-hover:text-amber-400 transition-colors">{p.name}</h3>
-                          <p className="text-slate-400 text-xs mt-1 line-clamp-2 min-h-[2rem]">{p.description || 'No description available.'}</p>
+                          <h3 className="text-lg font-bold text-slate-900 group-hover:text-blue-700 transition-colors">{p.name}</h3>
+                          <p className="text-slate-500 text-xs mt-1 line-clamp-2 min-h-[2rem]">{p.description || 'No description available.'}</p>
                         </div>
 
-                        <div className="flex items-center justify-between mt-5 pt-4 border-t border-slate-900">
+                        <div className="flex items-center justify-between mt-5 pt-4 border-t border-slate-100">
                           <div>
                             <span className="block text-[10px] text-slate-650 uppercase font-bold tracking-wider">Unit Price</span>
-                            <span className="text-xl font-black text-white">${p.price.toFixed(2)}</span>
+                            <span className="text-xl font-black text-slate-900">${p.price.toFixed(2)}</span>
                           </div>
 
                           <button
                             disabled={p.stock <= 0}
                             onClick={() => addToCart(p)}
-                            className="px-4 py-2 rounded-lg bg-slate-800 hover:bg-amber-500 disabled:opacity-30 disabled:bg-slate-800/50 text-slate-100 group-hover:text-white hover:text-slate-950 font-bold text-xs transition-all flex items-center gap-1.5"
+                            className="px-4 py-2 rounded-lg bg-slate-100 hover:bg-orange-500 disabled:opacity-30 disabled:bg-slate-100/50 text-slate-700 group-hover:text-slate-700 hover:text-white font-bold text-xs transition-all flex items-center gap-1.5"
                           >
                             <span>Add</span>
                             <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
@@ -840,29 +840,29 @@ function App() {
               /* Vista Historial */
               <div className="max-w-4xl mx-auto">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-xl font-bold text-slate-200 flex items-center gap-2">
-                    <FileText className="w-5 h-5 text-amber-500" />
+                  <h2 className="text-xl font-bold text-slate-900 flex items-center gap-2">
+                    <FileText className="w-5 h-5 text-blue-900" />
                     My Purchases History
                   </h2>
                 </div>
 
                 {salesHistory.length === 0 ? (
-                  <div className="text-center py-20 bg-slate-900/30 border border-dashed border-slate-900 rounded-2xl">
-                    <ShoppingBag className="w-12 h-12 text-slate-700 mx-auto mb-4" />
+                  <div className="text-center py-20 bg-slate-50 border border-dashed border-slate-300 rounded-2xl">
+                    <ShoppingBag className="w-12 h-12 text-slate-300 mx-auto mb-4" />
                     <h3 className="text-lg font-bold text-slate-400">You haven't made any purchases yet</h3>
                     <p className="text-slate-600 text-sm mt-1">Explore our catalog and purchase your materials directly.</p>
                   </div>
                 ) : (
                   <div className="space-y-4">
                     {salesHistory.map(sale => (
-                      <div key={sale.id} className="bg-slate-900 border border-slate-850 rounded-xl p-5 flex flex-col sm:flex-row justify-between sm:items-center gap-4 hover:border-slate-800 transition-all">
+                      <div key={sale.id} className="bg-white border border-slate-200 rounded-xl p-5 flex flex-col sm:flex-row justify-between sm:items-center gap-4 hover:border-slate-800 transition-all">
                         <div>
                           <div className="flex items-center gap-3">
-                            <span className="font-mono text-slate-200 font-bold">No. #{String(sale.id).padStart(6, '0')}</span>
-                            <span className="px-2 py-0.5 bg-emerald-500/10 text-emerald-400 font-bold text-[10px] rounded-full uppercase">Completed</span>
+                            <span className="font-mono text-slate-800 font-bold">No. #{String(sale.id).padStart(6, '0')}</span>
+                            <span className="px-2 py-0.5 bg-emerald-100 text-emerald-700 font-bold text-[10px] rounded-full uppercase">Completed</span>
                           </div>
                           
-                          <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-500 mt-2">
+                          <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-400 mt-2">
                             <span>Date: {new Date(sale.saleDate).toLocaleString()}</span>
                             <span>Items: {sale.details.reduce((sum, d) => sum + d.quantity, 0)}</span>
                           </div>
@@ -881,7 +881,7 @@ function App() {
 
                           <button 
                             onClick={() => downloadReceipt(sale.id)}
-                            className="p-2.5 bg-slate-950 border border-slate-800 rounded-lg text-slate-400 hover:text-amber-500 hover:border-amber-500/30 transition-all"
+                            className="p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-400 hover:text-blue-700 hover:border-blue-300 transition-all"
                             title="Download PDF Receipt"
                           >
                             <Download className="w-4.5 h-4.5" />
@@ -906,40 +906,40 @@ function App() {
               ></div>
 
               {/* Contenedor Drawer */}
-              <div className="w-full max-w-md bg-slate-900 border-l border-slate-800 relative z-10 flex flex-col h-full shadow-2xl animate-slide-left">
+              <div className="w-full max-w-md bg-white border-l border-slate-200 relative z-10 flex flex-col h-full shadow-2xl animate-slide-left">
                 {/* Header */}
-                <div className="p-6 border-b border-slate-850 flex items-center justify-between">
-                  <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                    <ShoppingCart className="w-5 h-5 text-amber-500" />
+                <div className="p-6 border-b border-slate-200 flex items-center justify-between">
+                  <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                    <ShoppingCart className="w-5 h-5 text-blue-900" />
                     My Cart
                   </h3>
-                  <button onClick={() => setIsCartOpen(false)} className="text-slate-400 hover:text-slate-100 font-bold text-2xl leading-none">&times;</button>
+                  <button onClick={() => setIsCartOpen(false)} className="text-slate-400 hover:text-slate-700 font-bold text-2xl leading-none">&times;</button>
                 </div>
 
                 {/* Items */}
                 <div className="flex-1 overflow-y-auto p-6 space-y-4">
                   {cart.length === 0 ? (
-                    <div className="text-center py-20 text-slate-600 space-y-3">
+                    <div className="text-center py-20 text-slate-400 space-y-3">
                       <ShoppingCart className="w-12 h-12 text-slate-700 mx-auto" />
                       <p className="text-sm font-medium">Your cart is empty.</p>
-                      <button onClick={() => setIsCartOpen(false)} className="text-xs text-amber-500 hover:underline">Back to Catalog</button>
+                      <button onClick={() => setIsCartOpen(false)} className="text-xs text-blue-700 hover:underline">Back to Catalog</button>
                     </div>
                   ) : (
                     cart.map(item => (
-                      <div key={item.id} className="flex gap-4 p-3 bg-slate-950 border border-slate-900 rounded-xl">
+                      <div key={item.id} className="flex gap-4 p-3 bg-slate-50 border border-slate-200 rounded-xl">
                         <div className="flex-1 min-w-0">
-                          <h4 className="text-sm font-semibold text-white truncate">{item.name}</h4>
+                          <h4 className="text-sm font-semibold text-slate-900 truncate">{item.name}</h4>
                           <span className="text-xs text-slate-500">${item.price.toFixed(2)} per {item.unit}</span>
                           
                           <div className="flex items-center gap-2 mt-2">
                             <button 
                               onClick={() => updateCartQty(item.id, item.quantity - 1, item.stock)}
-                              className="w-7 h-7 bg-slate-900 border border-slate-800 rounded flex items-center justify-center font-bold text-slate-350 hover:bg-slate-800"
+                              className="w-7 h-7 bg-slate-100 border border-slate-200 rounded flex items-center justify-center font-bold text-slate-600 hover:bg-slate-200"
                             >-</button>
-                            <span className="w-8 text-center text-xs font-semibold text-white">{item.quantity}</span>
+                            <span className="w-8 text-center text-xs font-semibold text-slate-900">{item.quantity}</span>
                             <button 
                               onClick={() => updateCartQty(item.id, item.quantity + 1, item.stock)}
-                              className="w-7 h-7 bg-slate-900 border border-slate-800 rounded flex items-center justify-center font-bold text-slate-350 hover:bg-slate-800"
+                              className="w-7 h-7 bg-slate-100 border border-slate-200 rounded flex items-center justify-center font-bold text-slate-600 hover:bg-slate-200"
                             >+</button>
                           </div>
                         </div>
@@ -951,7 +951,7 @@ function App() {
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
-                          <span className="text-sm font-bold text-slate-200">${(item.price * item.quantity).toFixed(2)}</span>
+                          <span className="text-sm font-bold text-slate-700">${(item.price * item.quantity).toFixed(2)}</span>
                         </div>
                       </div>
                     ))
@@ -960,17 +960,17 @@ function App() {
 
                 {/* Resumen & Checkout */}
                 {cart.length > 0 && (
-                  <div className="p-6 border-t border-slate-850 bg-slate-950 space-y-4">
-                    <div className="space-y-1.5 text-xs text-slate-400">
+                  <div className="p-6 border-t border-slate-200 bg-slate-50 space-y-4">
+                    <div className="space-y-1.5 text-xs text-slate-500">
                       <div className="flex justify-between">
                         <span>Subtotal:</span>
-                        <span className="text-slate-200 font-semibold">${cartSubtotal.toFixed(2)}</span>
+                        <span className="text-slate-800 font-semibold">${cartSubtotal.toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between">
                         <span>VAT (19%):</span>
-                        <span className="text-slate-200 font-semibold">${cartTax.toFixed(2)}</span>
+                        <span className="text-slate-800 font-semibold">${cartTax.toFixed(2)}</span>
                       </div>
-                      <div className="flex justify-between text-sm border-t border-slate-900 pt-2 text-slate-200 font-extrabold">
+                      <div className="flex justify-between text-sm border-t border-slate-200 pt-2 text-slate-800 font-extrabold">
                         <span>Total Purchase:</span>
                         <span className="text-amber-500">${cartTotal.toFixed(2)}</span>
                       </div>
@@ -979,7 +979,7 @@ function App() {
                     <button 
                       onClick={handleCheckout}
                       disabled={isLoading}
-                      className="w-full py-3 bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-slate-950 font-bold rounded-lg transition-all text-sm"
+                      className="w-full py-3 bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-white font-bold rounded-lg transition-all text-sm"
                     >
                       {isLoading ? 'Processing Purchase...' : 'Confirm and Pay'}
                     </button>
@@ -990,7 +990,7 @@ function App() {
           )}
 
           {/* Footer */}
-          <footer className="border-t border-slate-900/60 bg-slate-950 py-6 text-center text-slate-500 text-xs mt-auto">
+          <footer className="border-t border-slate-200 bg-slate-50 py-6 text-center text-slate-400 text-xs mt-auto">
             <p>Firmeza © — Customer Shopping & Self-Service Portal</p>
           </footer>
         </div>

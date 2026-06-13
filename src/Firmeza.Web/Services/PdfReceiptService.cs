@@ -48,16 +48,16 @@ public class PdfReceiptService
                             c.Item().Text("FIRMEZA")
                                 .FontSize(26).Bold()
                                 .FontColor(Color.FromHex("#ca8a04"));
-                            c.Item().Text("Materiales de Construcción")
+                            c.Item().Text("Construction Materials")
                                 .FontSize(11).FontColor(Color.FromHex("#64748b"));
                         });
                         row.ConstantItem(160).Column(c =>
                         {
-                            c.Item().AlignRight().Text("RECIBO DE VENTA")
+                            c.Item().AlignRight().Text("SALES RECEIPT")
                                 .FontSize(14).Bold().FontColor(Color.FromHex("#1e293b"));
                             c.Item().AlignRight().Text($"# {sale.Id:D6}")
                                 .FontSize(13).FontColor(Color.FromHex("#ca8a04"));
-                            c.Item().AlignRight().Text($"Fecha: {sale.SaleDate:dd/MM/yyyy}")
+                            c.Item().AlignRight().Text($"Date: {sale.SaleDate:MM/dd/yyyy}")
                                 .FontSize(10).FontColor(Color.FromHex("#64748b"));
                         });
                     });
@@ -70,20 +70,20 @@ public class PdfReceiptService
                     // Datos del cliente
                     col.Item().Background(Color.FromHex("#f8fafc")).Padding(12).Column(clientCol =>
                     {
-                        clientCol.Item().Text("DATOS DEL CLIENTE")
+                        clientCol.Item().Text("CUSTOMER INFORMATION")
                             .FontSize(9).Bold().FontColor(Color.FromHex("#64748b"))
                             .LetterSpacing(1);
                         clientCol.Item().PaddingTop(6).Row(row =>
                         {
                             row.RelativeItem().Column(c =>
                             {
-                                c.Item().Text($"Nombre: {sale.Client.FullName}").SemiBold();
-                                c.Item().Text($"Documento: {sale.Client.DocumentType} {sale.Client.DocumentNumber}");
+                                c.Item().Text($"Name: {sale.Client.FullName}").SemiBold();
+                                c.Item().Text($"ID: {sale.Client.DocumentType} {sale.Client.DocumentNumber}");
                             });
                             row.RelativeItem().Column(c =>
                             {
                                 c.Item().Text($"Email: {sale.Client.Email}");
-                                c.Item().Text($"Teléfono: {sale.Client.Phone}");
+                                c.Item().Text($"Phone: {sale.Client.Phone}");
                             });
                         });
                     });
@@ -93,7 +93,7 @@ public class PdfReceiptService
                     // Estado
                     col.Item().Row(row =>
                     {
-                        row.RelativeItem().Text($"Estado: {sale.Status}").FontSize(10);
+                        row.RelativeItem().Text($"Status: {sale.Status}").FontSize(10);
                     });
 
                     col.Item().PaddingTop(12);
@@ -117,9 +117,9 @@ public class PdfReceiptService
 
                         table.Header(header =>
                         {
-                            header.Cell().Element(HeaderCell).Text("Producto");
-                            header.Cell().Element(HeaderCell).AlignCenter().Text("Cant.");
-                            header.Cell().Element(HeaderCell).AlignRight().Text("P. Unit.");
+                            header.Cell().Element(HeaderCell).Text("Product");
+                            header.Cell().Element(HeaderCell).AlignCenter().Text("Qty.");
+                            header.Cell().Element(HeaderCell).AlignRight().Text("Unit Price");
                             header.Cell().Element(HeaderCell).AlignRight().Text("Subtotal");
                         });
 
@@ -152,7 +152,7 @@ public class PdfReceiptService
                         });
                         totals.Item().Row(r =>
                         {
-                            r.ConstantItem(120).Text("IVA (19%):");
+                            r.ConstantItem(120).Text("VAT (19%):");
                             r.ConstantItem(100).AlignRight().Text($"${iva:N2}");
                         });
                         totals.Item().LineHorizontal(1).LineColor(Color.FromHex("#ca8a04"));
@@ -167,7 +167,7 @@ public class PdfReceiptService
                 // Pie de página
                 page.Footer().AlignCenter().Text(text =>
                 {
-                    text.Span("Firmeza © — Materiales de Construcción | ")
+                    text.Span("Firmeza © — Construction Materials | ")
                         .FontSize(9).FontColor(Color.FromHex("#94a3b8"));
                     text.CurrentPageNumber().FontSize(9).FontColor(Color.FromHex("#94a3b8"));
                     text.Span(" / ").FontSize(9).FontColor(Color.FromHex("#94a3b8"));

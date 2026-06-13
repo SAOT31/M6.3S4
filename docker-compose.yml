@@ -8,7 +8,7 @@ services:
       POSTGRES_USER:     postgres
       POSTGRES_PASSWORD: admin123
     ports:
-      - "5433:5432"
+      - "5436:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
@@ -39,7 +39,7 @@ services:
       dockerfile: src/Firmeza.Api/Dockerfile
     container_name: firmeza_api
     ports:
-      - "5000:8080"
+      - "5001:8080"
     environment:
       ConnectionStrings__DefaultConnection: "Host=db;Port=5432;Database=firmeza_db;Username=postgres;Password=admin123"
       ASPNETCORE_ENVIRONMENT: Production

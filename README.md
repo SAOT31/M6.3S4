@@ -140,51 +140,28 @@ Contraseña: Admin123!
 ## Instalación y ejecución local
 
 ### Requisitos previos
-- [.NET 10 SDK](https://dotnet.microsoft.com/download)
-- PostgreSQL 14+ **o** Docker Desktop
+- Docker (Requerido para la orquestación del backend y base de datos)
+- Node.js (Requerido para la compilación y ejecución del frontend)
 
-### Opción A — PostgreSQL local
+### Instrucciones de Despliegue
 
-1. Clona el repositorio
-2. Edita la cadena de conexión en `src/Firmeza.Web/appsettings.json`:
-   ```json
-   "DefaultConnection": "Host=localhost;Port=5432;Database=firmeza_db;Username=postgres;Password=TU_PASSWORD"
-   ```
-3. Crea la migración inicial:
+Este enfoque garantiza la reproducibilidad del entorno sin requerir la instalación local del SDK de .NET ni la configuración manual del motor de base de datos.
+
+1. Inicializar el ecosistema del backend (Base de datos, API RESTful y Panel Web):
    ```bash
-   dotnet ef migrations add Initial \
-     --project src/Firmeza.Infrastructure \
-     --startup-project src/Firmeza.Web
+   docker-compose up --build -d
    ```
-4. Ejecuta la aplicación (aplica la migración y crea el admin automáticamente):
+   > **Nota:** La aplicación de migraciones y el *seeding* de datos se ejecutan automáticamente durante el inicio.
+   > - Panel de administración disponible en: `http://localhost:8080`
+   > - API RESTful disponible en: `http://localhost:5000`
+
+2. Compilar e inicializar el módulo frontend:
    ```bash
-   dotnet run --project src/Firmeza.Web
+   cd src/Firmeza.Client
+   npm install
+   npm run dev
    ```
-5. Abre `http://localhost:5068` en el navegador.
-
-### Opción B — PostgreSQL vía Docker (más rápido)
-
-```bash
-# Levanta solo el contenedor de la base de datos
-docker run -d \
-  --name firmeza_postgres \
-  -e POSTGRES_PASSWORD=admin123 \
-  -e POSTGRES_DB=firmeza_db \
-  -e POSTGRES_USER=postgres \
-  -p 5432:5432 \
-  postgres:16
-```
-
-Luego sigue desde el paso 2 de la Opción A usando `Password=admin123`.
-
-### Opción C — Todo en Docker (app + BD)
-
-```bash
-# Edita YOUR_PASSWORD en docker-compose.yml primero
-docker-compose up --build
-```
-
-Accede en `http://localhost:8080`
+   > - Portal de clientes disponible en: `http://localhost:5173`
 
 ---
 
@@ -302,20 +279,7 @@ Módulo SPA desarrollado para que los clientes interactúen directamente con la 
 - **Facturación y Comprobantes**: Al procesar la compra, la API genera un comprobante PDF en memoria y lo envía por correo electrónico al cliente (utilizando el SMTP simulado/real). Además, el frontend ofrece descarga directa del comprobante en PDF.
 - **Historial de Compras**: Sección donde el cliente puede visualizar todas sus compras pasadas y volver a descargar los comprobantes en cualquier momento.
 
-### Ejecución Local
-1. Navega al directorio del cliente:
-   ```bash
-   cd src/Firmeza.Client
-   ```
-2. Instala las dependencias de node:
-   ```bash
-   npm install
-   ```
-3. Inicia el servidor de desarrollo:
-   ```bash
-   npm run dev
-   ```
-4. Abre `http://localhost:5173` en el navegador.
+
 
 ---
 

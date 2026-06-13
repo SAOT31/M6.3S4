@@ -7,6 +7,7 @@ namespace Firmeza.Core.Enums;
 public static class AppRoles
 {
     public const string Admin    = "Admin";
-    public const string Customer = "Customer";
     public const string Cliente  = "Cliente";
+    // Customer es un alias de Cliente para mantener compatibilidad con el panel Web MVC
+    public const string Customer = Cliente;
 }
