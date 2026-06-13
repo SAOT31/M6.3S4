@@ -47,13 +47,18 @@ Firmeza/
 │   │   ├── appsettings.json        ← Configuración de conexión y logging
 │   │   └── Dockerfile              ← Imagen Docker del proyecto web
 │   │
-│   └── Firmeza.Api/                ← Capa de servicios RESTful [NEW]
-│       ├── Controllers/            ← Controladores API (Auth, Products, Clients, Sales)
-│       ├── Dtos/                   ← Data Transfer Objects
-│       ├── Mappings/               ← Perfiles de mapeo (AutoMapper)
-│       ├── Program.cs              ← Punto de entrada y middleware de la API
-│       ├── appsettings.json        ← Configuración de la API (DB, JWT, SMTP)
-│       └── Dockerfile              ← Imagen Docker de la API
+│   ├── Firmeza.Api/                ← Capa de servicios RESTful [NEW]
+│   │   ├── Controllers/            ← Controladores API (Auth, Products, Clients, Sales)
+│   │   ├── Dtos/                   ← Data Transfer Objects
+│   │   ├── Mappings/               ← Perfiles de mapeo (AutoMapper)
+│   │   ├── Program.cs              ← Punto de entrada y middleware de la API
+│   │   ├── appsettings.json        ← Configuración de la API (DB, JWT, SMTP)
+│   │   └── Dockerfile              ← Imagen Docker de la API
+│   │
+│   └── Firmeza.Client/             ← Portal de clientes (SPA React) [NEW]
+│       ├── src/                    ← Vistas, componentes y ruteo en React
+│       ├── package.json            ← Configuración del proyecto y Tailwind CSS v4
+│       └── Dockerfile              ← Imagen Docker de producción (Nginx)
 │
 └── tests/
     └── Firmeza.Tests/              ← Pruebas unitarias con xUnit
