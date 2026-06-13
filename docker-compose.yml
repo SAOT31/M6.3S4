@@ -17,6 +17,12 @@ services:
       timeout: 5s
       retries: 5
 
+  tests:
+    build:
+      context: .
+      dockerfile: tests/Firmeza.Tests/Dockerfile
+    container_name: firmeza_tests
+
   admin:
     build:
       context: .
