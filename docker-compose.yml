@@ -9,7 +9,15 @@ services:
       POSTGRES_PASSWORD: admin123
     ports:
       - "5436:5432"
-    volumes:
+      client:
+    build:
+      context: ./src/Firmeza.Client
+      dockerfile: Dockerfile
+    container_name: firmeza_client
+    ports:
+      - "5173:80"
+
+volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
@@ -36,7 +44,15 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    volumes:
+      client:
+    build:
+      context: ./src/Firmeza.Client
+      dockerfile: Dockerfile
+    container_name: firmeza_client
+    ports:
+      - "5173:80"
+
+volumes:
       - recibos_data:/app/wwwroot/recibos
 
   api:
@@ -56,6 +72,14 @@ services:
     depends_on:
       db:
         condition: service_healthy
+
+  client:
+    build:
+      context: ./src/Firmeza.Client
+      dockerfile: Dockerfile
+    container_name: firmeza_client
+    ports:
+      - "5173:80"
 
 volumes:
   postgres_data:
