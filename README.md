@@ -70,6 +70,8 @@ Firmeza/
 - **Core**: No depende de nada externo — puro C#. Si cambias la base de datos o el framework, Core no cambia.
 - **Infrastructure**: Se encarga del acceso a datos, persistencia en la base de datos y envío de correos.
 - **Web**: Panel administrativo interno desarrollado con Razor Pages.
+- **Api**: Backend RESTful que expone la lógica de negocio y endpoints seguros mediante JWT.
+- **Client**: Aplicación SPA independiente en React para que los clientes finales compren materiales.
 
 ---
 
