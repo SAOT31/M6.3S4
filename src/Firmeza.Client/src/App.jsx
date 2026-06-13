@@ -798,7 +798,21 @@ function App() {
                 ) : (
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredProducts.map(p => (
-                      <div key={p.id} className="bg-white border border-slate-200 rounded-xl p-5 flex flex-col justify-between hover:border-blue-200 hover:shadow-lg transition-all group">
+                      <div key={p.id} className="bg-white border border-slate-200 rounded-xl overflow-hidden flex flex-col justify-between hover:border-blue-200 hover:shadow-lg transition-all group">
+                        {/* Imagen del producto */}
+                        <div className="w-full h-44 bg-white overflow-hidden flex items-center justify-center">
+                          {p.imageUrl ? (
+                            <img
+                              src={p.imageUrl}
+                              alt={p.name}
+                              className="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-300"
+                              onError={(e) => { e.target.style.display='none'; e.target.parentNode.innerHTML='<span class=\"text-slate-300 text-4xl\">🏗️</span>'; }}
+                            />
+                          ) : (
+                            <span className="text-slate-300 text-5xl">🏗️</span>
+                          )}
+                        </div>
+                        <div className="p-5 flex flex-col flex-1 justify-between">
                         <div>
                           <div className="flex justify-between items-start gap-2 mb-2">
                             <span className="text-[10px] uppercase tracking-wider font-extrabold text-blue-900 px-2 py-0.5 bg-blue-900/10 rounded-full">{p.category}</span>
@@ -830,6 +844,7 @@ function App() {
                             <span>Add</span>
                             <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
                           </button>
+                        </div>
                         </div>
                       </div>
                     ))}
