@@ -46,6 +46,8 @@ volumes:
         condition: service_healthy
       tests:
         condition: service_completed_successfully
+      tests:
+        condition: service_completed_successfully
       client:
     build:
       context: ./src/Firmeza.Client
