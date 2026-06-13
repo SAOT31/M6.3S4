@@ -153,7 +153,18 @@ Este enfoque garantiza la calidad y reproducibilidad completa del entorno median
 
 ### Instrucciones de Despliegue Orquestado
 
-Este enfoque garantiza la reproducibilidad del entorno sin requerir la instalación local del SDK de .NET ni la configuración manual del motor de base de datos.
+Para levantar toda la solución (Base de datos, Backend API, Panel de Administración Razor y Portal de Cliente SPA) asegurando que todas las pruebas pasen con éxito, ejecuta:
+
+```bash
+docker compose up --build
+```
+
+#### Flujo de ejecución del orquestador:
+1. **db**: Levanta la base de datos PostgreSQL 16 y espera a que esté saludable (`service_healthy`).
+2. **tests**: Compila la solución completa y ejecuta las pruebas automatizadas (`dotnet test`).
+   * *Si alguna prueba falla*: Detiene todo el despliegue para evitar subir servicios defectuosos.
+   * *Si todas las pruebas pasan*: Da luz verde a los demás servicios (`service_completed_successfully`).
+3. **api, admin, client**: Se inicializan en paralelo.
 
 1. Inicializar el ecosistema del backend (Base de datos, API RESTful y Panel Web):
    ```bash
