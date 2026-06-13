@@ -9,15 +9,7 @@ services:
       POSTGRES_PASSWORD: admin123
     ports:
       - "5436:5432"
-      client:
-    build:
-      context: ./src/Firmeza.Client
-      dockerfile: Dockerfile
-    container_name: firmeza_client
-    ports:
-      - "5173:80"
-
-volumes:
+    volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
@@ -30,34 +22,6 @@ volumes:
       context: .
       dockerfile: tests/Firmeza.Tests/Dockerfile
     container_name: firmeza_tests
-
-  admin:
-    build:
-      context: .
-      dockerfile: src/Firmeza.Web/Dockerfile
-    container_name: firmeza_admin
-    ports:
-      - "8080:8080"
-    environment:
-      ConnectionStrings__DefaultConnection: "Host=db;Port=5432;Database=firmeza_db;Username=postgres;Password=admin123"
-      ASPNETCORE_ENVIRONMENT: Production
-    depends_on:
-      db:
-        condition: service_healthy
-      tests:
-        condition: service_completed_successfully
-      tests:
-        condition: service_completed_successfully
-      client:
-    build:
-      context: ./src/Firmeza.Client
-      dockerfile: Dockerfile
-    container_name: firmeza_client
-    ports:
-      - "5173:80"
-
-volumes:
-      - recibos_data:/app/wwwroot/recibos
 
   api:
     build:
@@ -79,6 +43,24 @@ volumes:
       tests:
         condition: service_completed_successfully
 
+  admin:
+    build:
+      context: .
+      dockerfile: src/Firmeza.Web/Dockerfile
+    container_name: firmeza_admin
+    ports:
+      - "8080:8080"
+    environment:
+      ConnectionStrings__DefaultConnection: "Host=db;Port=5432;Database=firmeza_db;Username=postgres;Password=admin123"
+      ASPNETCORE_ENVIRONMENT: Production
+    depends_on:
+      db:
+        condition: service_healthy
+      tests:
+        condition: service_completed_successfully
+    volumes:
+      - recibos_data:/app/wwwroot/recibos
+
   client:
     build:
       context: ./src/Firmeza.Client
@@ -86,6 +68,9 @@ volumes:
     container_name: firmeza_client
     ports:
       - "5173:80"
+    depends_on:
+      tests:
+        condition: service_completed_successfully
 
 volumes:
   postgres_data:
