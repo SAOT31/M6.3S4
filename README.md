@@ -261,7 +261,7 @@ dotnet test
 La API RESTful expone endpoints para la gestión del negocio y la integración con aplicaciones clientes (como portales Blazor).
 
 ### Características
-- **Swagger UI**: Disponible en `http://localhost:5000/swagger` para pruebas interactivas de endpoints.
+- **Swagger UI**: Disponible en `http://localhost:5001/swagger` para pruebas interactivas de endpoints.
 - **Autenticación JWT**: Permite registrar e iniciar sesión de usuarios y recibir tokens JWT.
 - **AutoMapper y DTOs**: Las entradas y salidas de los controladores están mapeadas a DTOs con validaciones.
 - **Operaciones de Negocio**:
