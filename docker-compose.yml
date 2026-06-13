@@ -17,11 +17,11 @@ services:
       timeout: 5s
       retries: 5
 
-  web:
+  admin:
     build:
       context: .
       dockerfile: src/Firmeza.Web/Dockerfile
-    container_name: firmeza_web
+    container_name: firmeza_admin
     ports:
       - "8080:8080"
     environment:
