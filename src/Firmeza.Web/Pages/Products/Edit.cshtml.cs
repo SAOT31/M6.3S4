@@ -37,7 +37,8 @@ public class EditModel : PageModel
             Category    = product.Category,
             Unit        = product.Unit,
             Price       = product.Price,
-            Stock       = product.Stock
+            Stock       = product.Stock,
+            ImageUrl    = product.ImageUrl
         };
 
         return Page();
@@ -61,6 +62,7 @@ public class EditModel : PageModel
             product.Unit        = Product.Unit;
             product.Price       = Product.Price;
             product.Stock       = Product.Stock;
+            product.ImageUrl    = Product.ImageUrl;
             product.UpdatedAt   = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();

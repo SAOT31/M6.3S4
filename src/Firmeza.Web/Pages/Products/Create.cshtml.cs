@@ -40,6 +40,7 @@ public class CreateModel : PageModel
                 Unit        = Product.Unit,
                 Price       = Product.Price,
                 Stock       = Product.Stock,
+                ImageUrl    = Product.ImageUrl,
                 CreatedAt   = DateTime.UtcNow,
                 UpdatedAt   = DateTime.UtcNow
             };

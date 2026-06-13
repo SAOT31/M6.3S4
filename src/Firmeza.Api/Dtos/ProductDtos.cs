@@ -11,6 +11,7 @@ public class ProductDto
     public string Unit { get; set; } = string.Empty;
     public decimal Price { get; set; }
     public int Stock { get; set; }
+    public string? ImageUrl { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 }
@@ -37,6 +38,9 @@ public class CreateProductDto
     [Required(ErrorMessage = "El stock es obligatorio.")]
     [Range(0, int.MaxValue, ErrorMessage = "El stock no puede ser negativo.")]
     public int Stock { get; set; }
+
+    [StringLength(2048)]
+    public string? ImageUrl { get; set; }
 }
 
 public class UpdateProductDto
@@ -61,4 +65,7 @@ public class UpdateProductDto
     [Required(ErrorMessage = "El stock es obligatorio.")]
     [Range(0, int.MaxValue, ErrorMessage = "El stock no puede ser negativo.")]
     public int Stock { get; set; }
+
+    [StringLength(2048)]
+    public string? ImageUrl { get; set; }
 }

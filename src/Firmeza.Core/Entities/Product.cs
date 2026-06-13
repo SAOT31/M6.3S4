@@ -23,6 +23,9 @@ public class Product
     // Unidades disponibles en bodega — si cae por debajo de 10 aparece la alerta en el dashboard
     public int Stock { get; set; }
 
+    // URL de imagen del producto (opcional)
+    public string? ImageUrl { get; set; }
+
     // Fecha de registro del producto en el sistema
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 

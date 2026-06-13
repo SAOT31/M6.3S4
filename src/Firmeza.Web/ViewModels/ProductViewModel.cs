@@ -33,6 +33,10 @@ public class ProductViewModel
     [Display(Name = "Stock")]
     public int Stock { get; set; }
 
+    [StringLength(2048)]
+    [Display(Name = "Photo URL")]
+    public string? ImageUrl { get; set; }
+
     // Categorías y unidades para los formularios
     public static List<string> Categories =>
         ["Cement", "Steel Bar", "Paint", "Sand", "Brick", "Tile", "Other"];

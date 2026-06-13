@@ -90,6 +90,23 @@
                 </div>
             </div>
 
+            <!-- Photo URL -->
+            <div>
+                <label asp-for="Product.ImageUrl" class="block text-sm font-medium text-gray-700 mb-1"></label>
+                <input asp-for="Product.ImageUrl" type="url"
+                       id="imageUrlInput"
+                       class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                       placeholder="https://example.com/product-photo.jpg"
+                       oninput="updatePreview(this.value)" />
+                <span asp-validation-for="Product.ImageUrl" class="text-red-500 text-xs mt-1 block"></span>
+                <!-- Vista previa de la foto -->
+                <div id="imagePreview" class="mt-3 hidden">
+                    <p class="text-xs text-gray-500 mb-1">Preview:</p>
+                    <img id="previewImg" src="" alt="preview"
+                         class="h-32 w-32 object-cover rounded-lg border border-gray-200 shadow-sm" />
+                </div>
+            </div>
+
             <div class="flex gap-3 pt-2">
                 <button type="submit"
                         class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2.5 rounded-lg font-medium text-sm transition-colors">
@@ -106,4 +123,17 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        function updatePreview(url) {
+            const preview = document.getElementById('imagePreview');
+            const img = document.getElementById('previewImg');
+            if (url && url.trim() !== '') {
+                img.src = url;
+                preview.classList.remove('hidden');
+                img.onerror = () => preview.classList.add('hidden');
+            } else {
+                preview.classList.add('hidden');
+            }
+        }
+    </script>
 }
