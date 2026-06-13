@@ -130,7 +130,7 @@ erDiagram
 |---|---|
 | `Admin` | Acceso completo al panel Razor y API (dashboard, productos, clientes, ventas) |
 | `Customer` | Solo puede registrarse. **No puede acceder al panel Razor.** |
-| `Cliente` | Representa usuarios que compran desde el portal Blazor. Acceso exclusivo a endpoints de la API. |
+| `Cliente` | Representa usuarios que compran desde el portal SPA (React). Acceso exclusivo a endpoints de la API. |
 
 Al registrarse un usuario público en Razor, queda con el rol `Customer`. En la API de registro, por defecto se le asigna el rol `Cliente`.
 Los admins se crean via seed al arrancar la aplicación.
